@@ -14,8 +14,6 @@ public class PlayerControls : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         transform = GetComponent<Transform>();
-
-        currentSpeed = speed;
     }
 
     // Start is called before the first frame update
