@@ -9,7 +9,7 @@ public class PlayerControls : MonoBehaviour
     public float sneakModifier;
     private Rigidbody2D rigidbody2D;
     private Transform transform;
-
+    private Vector3 lastDirection;
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -57,9 +57,12 @@ public class PlayerControls : MonoBehaviour
         // Compute movement and rotation
         if(direction != Vector3.zero)
         {
-            transform.rotation = Quaternion.FromToRotation(Vector3.up, new Vector3(-direction.y, direction.x, direction.z));
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation =  Quaternion.AngleAxis(angle, Vector3.forward);
+
             float currentSpeed = isSneaking ? speed / sneakModifier : speed;
-            rigidbody2D.velocity = Vector3.Cross(direction, Vector3.one * (currentSpeed * direction.magnitude) * Time.deltaTime);
+            rigidbody2D.velocity = Vector3.Cross(direction, Vector3.one * (currentSpeed / direction.magnitude) * Time.deltaTime);
+            lastDirection = direction;
         }
         else
         {
