@@ -6,8 +6,8 @@ public class MoveCamera : MonoBehaviour
 {
 
     public GameObject Camera;
-    public GameObject StartPosition;
-    public GameObject EndPosition;
+    public GameObject CameraDebut;
+    public GameObject CameraFin;
 
     private float distance = 30f;
     private float LerpTime = 5;
@@ -19,41 +19,40 @@ public class MoveCamera : MonoBehaviour
     private Vector3 EdPosition;
     public bool isCollisoion = false;
 
+    public float Min =  -1.0f;
+    public float Max = -1.0f;
+    public float NextMove = 0.0f;
+
+    public float CameraTransformX;
+    public float CameraTransformY;
+
 
     private void Start()
     {
-         stPosition = StartPosition.transform.position;
-         EdPosition = EndPosition.transform.position;
+         stPosition = CameraDebut.transform.position;
+         EdPosition = CameraFin.transform.position;
 
     }
 
     private void Update()
     {
-        stPosition = StartPosition.transform.position;
-        
+        stPosition = CameraDebut.transform.position;
+
+        //var CameraTransformX = Mathf.Lerp(stPosition.x, EdPosition.x, NextMove);
+        //var CameraTransformY = Mathf.Lerp(stPosition.y, EdPosition.y, NextMove);
+        NextMove += 0.5f * Time.deltaTime;
 
 
     }
 
-    private void OnCollisionEnter(UnityEngine.Collision collision)
-    {
-
-        if (collision.gameObject.tag == "Player")
-        {
-            StepCameraMove();
-            isCollisoion = true;
-        }
-
-    }
 
     public void StepCameraMove()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            keyHit = true;
-            EdPosition = new Vector3(EndPosition.transform.position.x, EndPosition.transform.position.y, Camera.transform.position.z);
+          keyHit = true;
+          EdPosition = new Vector3(stPosition.x, EdPosition.y, Camera.transform.position.z);
 
-        }
+        Camera.transform.position = EdPosition;
+        
 
 
         return;

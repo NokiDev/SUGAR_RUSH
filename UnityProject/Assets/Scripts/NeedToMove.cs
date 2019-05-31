@@ -2,31 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StepCamera : MonoBehaviour
+public class NeedToMove : MonoBehaviour
 {
 
+    
     public bool isCollision = false;
-    // Start is called before the first frame update
-    void Start()
+    public GameObject TheCamera;
+
+    public void OnTriggerExit2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    private void OnCollisionEnter(UnityEngine.Collision collision)
-    {
-
-        if (collision.gameObject.tag == "Player")
+        if (collision.tag == "Player")
         {
-
-           
+            isCollision = true;
+            TheCamera.GetComponent<MoveCamera>().StepCameraMove();
+            
         }
+    }
+
+    
+    public void OnCollisionExit(Collision collision)
+    {
+        isCollision = false;    
 
     }
 }
