@@ -5,60 +5,80 @@ using UnityEngine.Tilemaps;
 
 public class GenerateStation : MonoBehaviour
 {
-    
-    public static int[,] GenerateArray(int width, int height, bool empty)
+    public int[,] map;
+    public const int MAX_HEIGHT = 40;
+    public const int MAX_WIDTH = 25;
+    public const int BG_LAYER_Z = 1;
+    public const int COLLIDE_LAYER_Z = 0;
+    public const int FG_LAYER_Z = -1;
+    public const int LIGHT_LAYER_Z = 3;
+
+    public Tile bg_tile;
+    public Tile wall_tile;
+
+    public Tilemap backgroundLayer;
+    public Tilemap collideLayer;
+    public Tilemap foregroundLayer;
+    public GameObject lightLayer;
+
+    public GameObject shadowCasterPrefab;
+
+    public void Start()
     {
-        int[,] map = new int[width, height];
-        for (int x = 0; x < map.GetUpperBound(0); x++)
-        {
-            for (int y = 0; y < map.GetUpperBound(1); y++)
+        Generate();    
+
+    }
+
+    private void Generate ()
+    {   
+        for (var i = 0; i <= MAX_HEIGHT; ++i) {
+            for (var j = 0; j <= MAX_WIDTH; ++j)
             {
-                if (empty)
+                // Generate wall if one of the coordinates is at the border. 
+                if ((i == 0 || j== 0) || i == MAX_HEIGHT || j == MAX_WIDTH)
                 {
-                    map[x, y] = 0;
+                    AddCollider(i, j);
                 }
                 else
                 {
-                    map[x, y] = 1;
-                }
-            }
-        }
-        return map;
-    }
+                    //place background
+                    backgroundLayer.SetTile(new Vector3Int(j, i, 0), bg_tile);
+                    if(i == MAX_HEIGHT /2 && j == MAX_WIDTH/2)
+                    {
+                        AddRoom(i, j);
+                    }
 
-    public static void RenderMap(int[,] map, Tilemap tilemap, TileBase tile)
-    {
-        //Clear the map (ensures we dont overlap)
-        tilemap.ClearAllTiles();
-        //Loop through the width of the map
-        for (int x = 0; x < map.GetUpperBound(0); x++)
-        {
-            //Loop through the height of the map
-            for (int y = 0; y < map.GetUpperBound(1); y++)
-            {
-                // 1 = tile, 0 = no tile
-                if (map[x, y] == 1)
-                {
-                    tilemap.SetTile(new Vector3Int(x, y, 0), tile);
                 }
             }
         }
     }
 
-    public static void UpdateMap(int[,] map, Tilemap tilemap) //Takes in our map and tilemap, setting null tiles where needed
+
+
+    void AddCollider(int i, int j)
     {
-        for (int x = 0; x < map.GetUpperBound(0); x++)
+        collideLayer.SetTile(new Vector3Int(j, i, 0), wall_tile);
+        var obj = Instantiate(shadowCasterPrefab, lightLayer.transform);
+        obj.transform.position = new Vector3(j + 0.5f, i + 0.5f, obj.transform.position.z);
+    }
+
+    void AddRoom(int centerY, int centerX)
+    {
+        int space = 3;
+        int size = 5;
+        // Borders
+        for (var i = 0; i <= size; ++i)
         {
-            for (int y = 0; y < map.GetUpperBound(1); y++)
+            for (var j = 0; j <= size; ++j) 
             {
-                //We are only going to update the map, rather than rendering again
-                //This is because it uses less resources to update tiles to null
-                //As opposed to re-drawing every single tile (and collision data)
-                if (map[x, y] == 0)
+                if ((i == 0 || j == 0 || i == size || j == size) && (i != (int)(size/2) && j != (int)(size/2)))
                 {
-                    tilemap.SetTile(new Vector3Int(x, y, 0), null);
+                    AddCollider(centerX -space + i, centerY -space + j);
+                    Debug.Log(centerX - space + i);
+                    Debug.Log(centerY - space + j);
                 }
             }
         }
     }
+
 }
