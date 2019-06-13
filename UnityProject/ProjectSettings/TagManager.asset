@@ -9,6 +9,7 @@ TagManager:
   - green_line
   - yellow_line
   - blue_line
+  - LocationHelper
   layers:
   - Default
   - TransparentFX
