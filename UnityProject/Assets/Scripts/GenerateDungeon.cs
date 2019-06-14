@@ -100,7 +100,7 @@ public class Room
         var south_border = position.y + size.y;
 
         int flumph = (int)Math.Sqrt(size.x * size.y);
-        int n_opens = flumph + currentRand.Next(flumph);
+        //int n_opens = flumph + currentRand.Next(flumph);
     }
 
     void Connect(Corridor corridor)
