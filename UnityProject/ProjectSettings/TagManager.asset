@@ -4,6 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - NPC
   - red_line
   - station
   - green_line
@@ -21,6 +22,7 @@ TagManager:
   - 
   - shadowcaster
   - lighting
+  - VisionCone
   - wall
   - 
   - 

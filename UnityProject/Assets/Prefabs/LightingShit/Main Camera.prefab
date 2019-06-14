@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   Speed: 10
+  StepBeforeCameraMove: 1
 --- !u!114 &7880222519137465747
 MonoBehaviour:
   m_ObjectHideFlags: 0
