@@ -17,7 +17,7 @@ public class MovingScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // Move only if direction is not equal to Vector 0
         if (direction != Vector3.zero)
