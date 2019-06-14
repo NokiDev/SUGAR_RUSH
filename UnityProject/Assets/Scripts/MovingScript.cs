@@ -8,6 +8,9 @@ public class MovingScript : MonoBehaviour
     private float speed;
     private Rigidbody2D rigidbody2D;
     private Transform transform;
+    private bool stunned;
+
+    private Damageable isDamageable;
 
     // Start is called before the first frame update
     void Start()
@@ -19,20 +22,35 @@ public class MovingScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        // Move only if direction is not equal to Vector 0
-        if (direction != Vector3.zero)
+        if( !stunned)
         {
-            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            // Move only if direction is not equal to Vector 0
+            if (direction != Vector3.zero)
+            {
+                var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-            rigidbody2D.velocity = Vector3.Cross(direction, Vector3.one * (speed / direction.magnitude) * Time.deltaTime);
-        }
-        else // reset the velocity
-        {
-            rigidbody2D.velocity = Vector3.zero;
+                rigidbody2D.velocity = Vector3.Cross(direction, Vector3.one * (speed / direction.magnitude) * Time.deltaTime);
+            }
+            else // reset the velocity
+            {
+                rigidbody2D.velocity = Vector3.zero;
+            }
         }
     }
 
+    public void Stun(float invicibilityTimer)
+    {
+        StartCoroutine("StunCoroutine", invicibilityTimer / 2);
+    }
+
+    IEnumerator StunCoroutine(float timer)
+    {
+        stunned = true;
+        yield return new WaitForSeconds(timer);
+        stunned = false;
+        yield return null;
+    }
 
     //Move at speed
     public void Move(Vector3 direction, float speed)

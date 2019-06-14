@@ -50,6 +50,12 @@ public class grenade : MonoBehaviour
             var r = o.GetComponent<Rigidbody2D>();
             if (r != null)
             {
+                var damageable = o.GetComponent<Damageable>();
+                if(damageable)
+                {
+                    damageable.DealDamage(1);
+                }
+
                 r.AddForce((o.transform.position - gameObject.transform.position)* force, ForceMode2D.Impulse);
             }
        

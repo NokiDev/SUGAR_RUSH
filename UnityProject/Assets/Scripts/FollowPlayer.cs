@@ -22,7 +22,7 @@ public class FollowPlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         LimiteXUp = Player.position.x + StepBeforeCameraMove;
         LimiteXDown = Player.position.x - StepBeforeCameraMove;
