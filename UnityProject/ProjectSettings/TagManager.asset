@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - NPC
+  - red_line
+  - station
+  - green_line
+  - yellow_line
+  - blue_line
+  - LocationHelper
   layers:
   - Default
   - TransparentFX
@@ -17,6 +23,7 @@ TagManager:
   - shadowcaster
   - lighting
   - VisionCone
+  - wall
   - 
   - 
   - 

@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
-    public float speed;
-    private bool isSneaking;
+    public float defautSpeed;
     public float sneakModifier;
-    private Rigidbody2D rigidbody2D;
-    private Transform transform;
-    private Vector3 lastDirection;
+    private MovingScript movingScript;
     private void Awake()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        transform = GetComponent<Transform>();
+        movingScript = GetComponent<MovingScript>();
     }
 
     // Start is called before the first frame update
@@ -45,28 +41,12 @@ public class PlayerControls : MonoBehaviour
         }
 
         // Sneak
-        if(!isSneaking && Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        float currentSpeed = defautSpeed;
+        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
-            isSneaking = true;
-        }
-        else if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
-        {
-            isSneaking = false;
+            currentSpeed = defautSpeed / sneakModifier;
         }
 
-        // Compute movement and rotation
-        if(direction != Vector3.zero)
-        {
-            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation =  Quaternion.AngleAxis(angle, Vector3.forward);
-
-            float currentSpeed = isSneaking ? speed / sneakModifier : speed;
-            rigidbody2D.velocity = Vector3.Cross(direction, Vector3.one * (currentSpeed / direction.magnitude) * Time.deltaTime);
-            lastDirection = direction;
-        }
-        else
-        {
-            rigidbody2D.velocity = Vector3.zero;
-        }
+        movingScript.Move(direction, currentSpeed);
     }
 }
