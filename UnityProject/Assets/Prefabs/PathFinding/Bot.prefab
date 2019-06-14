@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4207014380795556081}
   - component: {fileID: 4207014380795556043}
   m_Layer: 10
-  m_Name: Bot (1)
+  m_Name: Bot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d426e0c9be845524491fddb070c7cfd0, type: 3}
+  m_Sprite: {fileID: 1439554898325903805, guid: 1dc879385948c5949a5af27cf23b26ed,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 1
