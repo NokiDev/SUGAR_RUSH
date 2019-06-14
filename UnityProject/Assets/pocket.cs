@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class pocket : MonoBehaviour
 {
-    private int keys = 0;
+    private int keys = 10;
 
     public void addKey()
     {
