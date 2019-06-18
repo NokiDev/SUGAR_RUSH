@@ -40,7 +40,7 @@ public class PlayerDetector : MonoBehaviour
         {
             var direction = collision.gameObject.transform.position - gameObject.transform.position;
             
-             RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, direction, playerDetectionDistance, layerMask.value);
+            RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, direction, playerDetectionDistance, layerMask.value);
             if (hit.collider != null)
             {
                 if(hit.collider.gameObject.tag == "Player")

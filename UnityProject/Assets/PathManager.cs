@@ -11,56 +11,29 @@ public class PathManager : MonoBehaviour
     private AIDestinationSetter AIDestinationSetter;
     public int LocationStep = 0;
     private bool stop = false;
-    public PlayerDetector detector;
+    private BotTargetSelector targetSelector;
+
     
     void Start()
-    { 
-        detector.onPlayerDetected += FollowPlayer;
-        detector.onPlayerLost += UnFollowPlayer;
-        AIDestinationSetter = GetComponent<AIDestinationSetter>();
-        AIDestinationSetter.target = LocationsLists[0];
+    {
+        targetSelector = GetComponent<BotTargetSelector>();
+        targetSelector.SetTarget(LocationsLists[0]);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!stop && collision.tag == "LocationHelper") {
+        if (collision.tag == "LocationHelper") {
 
             if(LocationsLists.Count > 0) {
 
-            LocationStep++;
+                LocationStep++;
 
-            if (LocationStep >= LocationsLists.Count) {
-                LocationStep = 0;
-            }
+                if (LocationStep >= LocationsLists.Count) {
+                    LocationStep = 0;
+                }
 
-            AIDestinationSetter.target = LocationsLists[LocationStep];
-
+                targetSelector.SetTarget(LocationsLists[LocationStep]);
             }
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void FollowPlayer(GameObject player)
-    {
-        stop = true;
-        GetComponent<AIPath>().speed = 5;
-        GetComponent<SpriteRenderer>().color = Color.red;
-        AIDestinationSetter.target = player.transform;
-        
-    }
-
-    void UnFollowPlayer(GameObject player)
-    {
-        GetComponent<AIPath>().speed = 2;
-        GetComponent<SpriteRenderer>().color = Color.yellow;
-        stop = false;
-        AIDestinationSetter.target = LocationsLists[LocationStep];
-    }
-
-
 }
