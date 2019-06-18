@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Prototype.unity
     guid: 1a0c981fa969cbb4e910e3e852099039
+  - enabled: 1
+    path: Assets/Scenes/LeoScene.unity
+    guid: 19896b1d7ad763548bfb2b5646429705
   m_configObjects: {}
