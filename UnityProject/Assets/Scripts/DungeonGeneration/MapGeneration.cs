@@ -6,6 +6,16 @@ using UnityEngine.Tilemaps;
 
 public class MapGeneration : MonoBehaviour
 {
+    /* 
+     F      FLOOR
+     DOOR
+     SECRET_DOOR
+     HERSE
+     SDD    Entrance Up Stairs
+     SUU    Exit Down Stairs
+     */
+
+
     public Tile backgroundTile;
     public Tile wallTile;
 
@@ -52,6 +62,18 @@ public class MapGeneration : MonoBehaviour
                     {
                         cellType = "TBC";
                     }
+                    else if(cellType == "DR" || cellType == "DB" || cellType == "DL" || cellType == "DT")
+                    {
+                        cellType = "DOOR";
+                    }
+                    else if(cellType == "DPR" || cellType == "DPB" || cellType == "DPL" || cellType == "DPT")
+                    {
+                        cellType = "HERSE";
+                    }
+                    else if (cellType == "DSR" || cellType == "DSB" || cellType == "DSL" || cellType == "DST")
+                    {
+                        cellType = "SECRET_DOOR";
+                    }
                     map.Add(new KeyValuePair<uint, uint>(rowCounter, columnCounter), cellType);
 
                     cellType = "";
@@ -97,7 +119,7 @@ public class MapGeneration : MonoBehaviour
         positions.Add(bottomCenter);
         positions.Add(bottomRight);
 
-        for (int x = - 1; x < width; ++x)
+        for (int x = - 1; x < width ; ++x)
         {
             for (int y = -1; y < height; ++y)
             {
@@ -120,18 +142,11 @@ public class MapGeneration : MonoBehaviour
 
 
                 if(subSquare[center] == "F" 
-                    || subSquare[center] == "DR" 
-                    || subSquare[center] == "DB" 
-                    || subSquare[center] == "DL"
-                    || subSquare[center] == "DT"
-                    || subSquare[center] == "DSB"
-                    || subSquare[center] == "DPT"
-                    || subSquare[center] == "DPB"
-                    || subSquare[center] == "DPR"
-                    || subSquare[center] == "DPL"
-                    || subSquare[center] == "DSL"
-                    || subSquare[center] == "DSR"
+                    || subSquare[center] == "DOOR" 
+                    || subSquare[center] == "HERSE" 
+                    || subSquare[center] == "SECRET_DOOR"
                     || subSquare[center] == "SDD"
+                    || subSquare[center] == "SUU"
                     ) // we are on a path or in a room
                 {
                     //determines walls around.
@@ -188,18 +203,12 @@ public class MapGeneration : MonoBehaviour
                 Debug.Log(cellType);
 
                 if (cellType == "F"
-                    || cellType == "DR"
-                    || cellType == "DB"
-                    || cellType == "DL"
-                    || cellType == "DT"
-                    || cellType == "DSB"
-                    || cellType == "DPT"
-                    || cellType == "DPR"
-                    || cellType == "DPB"
-                    || cellType == "DPL"
-                    || cellType == "DSL"
-                    || cellType == "DSR"
-                    || cellType == "SDD")
+                    || cellType == "DOOR"
+                    || cellType == "HERSE"
+                    || cellType == "SECRET_DOOR"
+                    || cellType == "SDD"
+                    || cellType == "SUU"
+                    )
                 {
                     backgroundLayer.SetTile(new Vector3Int(x, y, 0), backgroundTile);
                 }
@@ -207,6 +216,9 @@ public class MapGeneration : MonoBehaviour
                 {
                     middlegroundLayer.SetTile(new Vector3Int(x, y, 0), wallTile);
                 }
+
+                
+
             }
         }
     }
