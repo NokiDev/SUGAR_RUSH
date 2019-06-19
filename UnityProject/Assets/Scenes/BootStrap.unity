@@ -157,6 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundTile: {fileID: 11400000, guid: 58f3c12d06bd8f54a9215d8a512b1638, type: 2}
   wallTile: {fileID: 11400000, guid: 3005e690848ee4040b3b172ddf1368db, type: 2}
+  doorTile: {fileID: 0}
   backgroundLayer: {fileID: 1194318057}
   middlegroundLayer: {fileID: 1850631205}
   lightLayer: {fileID: 0}

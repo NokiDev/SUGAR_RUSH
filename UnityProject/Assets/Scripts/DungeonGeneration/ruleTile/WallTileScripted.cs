@@ -35,6 +35,7 @@ public class WallTileScripted : Tile
         {
             tileData.sprite = m_Sprites[index];
             tileData.color = Color.white;
+            tileData.colliderType = ColliderType.Sprite;
             var m = tileData.transform;
             m.SetTRS(Vector3.zero, GetRotation((byte)mask), Vector3.one);
             tileData.transform = m;
@@ -81,8 +82,6 @@ public class WallTileScripted : Tile
     {
         switch (mask)
         {
-            
-            
             case 8:
             case 9:
             case 10:

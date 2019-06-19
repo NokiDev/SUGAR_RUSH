@@ -20,16 +20,21 @@ public class MapGeneration : MonoBehaviour
 
     public Tile backgroundTile;
     public Tile wallTile;
+    public Tile doorTile;
 
+    public GameObject lightCubePrefab;
     public Tilemap backgroundLayer;
     public Tilemap middlegroundLayer;
-    public Tilemap lightLayer;
+    public GameObject lightLayer;
     public Tilemap foregroundLayer;
     
     public string pathPrefix = "/Scripts/DungeonGeneration/Maps/";
     public string fileName = "test";
     private uint width;
     private uint height;
+
+    public delegate void Loader(Vector3 startPosition);
+    public Loader onLoaded;
     // Start is called before the first frame update
     void Start()
     {
@@ -202,27 +207,38 @@ public class MapGeneration : MonoBehaviour
     }
     private void GenerateMap(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {
+        Vector3 startPosition = Vector3.zero;
         foreach(var item in map)
         {
             var cellType = item.Value;
-            Debug.Log(cellType);
-
             if (cellType == "F"
-                || cellType == "DOOR"
-                || cellType == "HERSE"
-                || cellType == "SECRET_DOOR"
                 || cellType == "SD"
                 || cellType == "SDD"
-                || cellType == "SU"
                 || cellType == "SUU"
                 )
             {
                 backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
             }
+            else if (cellType == "SU")
+            {
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                startPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
+            }
             else if (cellType == "WALL")
             {
                 middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), wallTile);
+                var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
+                lightCube.transform.position = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, lightCube.transform.position.z);
+            }
+            else if(cellType == "DOOR"
+                || cellType == "HERSE"
+                || cellType == "SECRET_DOOR")
+            {
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
             }
         }
+
+        onLoaded?.Invoke(startPosition);
     }
 }
