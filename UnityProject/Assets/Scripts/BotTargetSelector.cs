@@ -9,19 +9,26 @@ public class BotTargetSelector : MonoBehaviour
     private AIDestinationSetter destination;
     Transform currentTarget;
     Transform lastTarget;
-    bool targetLocked;
+    bool targetLocked = false;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        if (detector == null)
+            detector = GetComponentInChildren<PlayerDetector>();
+        destination = GetComponent<AIDestinationSetter>();
+    }
     void Start()
     {
         detector.onPlayerDetected += (GameObject obj) => {
-            bool targetLocked = true;
-            GetComponent<AIPath>().speed = 5;
+            GetComponent<AIPath>().maxSpeed= 5;
             GetComponent<SpriteRenderer>().color = Color.red;
             SetTarget(obj.transform);
+            targetLocked = true;
         };
         detector.onPlayerLost += (GameObject obj) => {
-            bool targetLocked = false;
-            GetComponent<AIPath>().speed = 2;
+            targetLocked = false;
+            GetComponent<AIPath>().maxSpeed = 2;
             GetComponent<SpriteRenderer>().color = Color.yellow;
             SetTarget(lastTarget);
         };

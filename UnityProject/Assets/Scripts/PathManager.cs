@@ -12,7 +12,6 @@ public class PathManager : MonoBehaviour
     public int LocationStep = 0;
     private bool stop = false;
     private BotTargetSelector targetSelector;
-
     
     void Start()
     {
@@ -23,8 +22,7 @@ public class PathManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "LocationHelper") {
-
-            if(LocationsLists.Count > 0) {
+            if(LocationsLists.Count > 0 && collision.gameObject.transform == LocationsLists[LocationStep]) {
 
                 LocationStep++;
 
