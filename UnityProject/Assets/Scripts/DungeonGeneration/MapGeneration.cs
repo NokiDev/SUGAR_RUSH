@@ -11,7 +11,9 @@ public class MapGeneration : MonoBehaviour
      DOOR
      SECRET_DOOR
      HERSE
+     SD     Begining entrance
      SDD    Entrance Up Stairs
+     SU     Begining exit
      SUU    Exit Down Stairs
      */
 
@@ -46,7 +48,7 @@ public class MapGeneration : MonoBehaviour
 
         uint columnCounter = 0;
         uint rowCounter = 0;
-        Dictionary<KeyValuePair<uint, uint>, string> map = new Dictionary<KeyValuePair<uint, uint>, string>();
+        Dictionary<KeyValuePair<int, int>, string> map = new Dictionary<KeyValuePair<int, int>, string>();
         //Load the array in the heap.
         while (!inp_stm.EndOfStream)
         {
@@ -58,11 +60,12 @@ public class MapGeneration : MonoBehaviour
                 // Go to next row when encountering a tab.
                 if(c == '\t')
                 {
+                    // Pre treatment
                     if(cellType == "")
                     {
                         cellType = "TBC";
                     }
-                    else if(cellType == "DR" || cellType == "DB" || cellType == "DL" || cellType == "DT")
+                    else if(cellType == "DR" || cellType == "DB" || cellType == "DL" || cellType == "DT") // Stqnds for Top, bottom, left and right.
                     {
                         cellType = "DOOR";
                     }
@@ -74,7 +77,7 @@ public class MapGeneration : MonoBehaviour
                     {
                         cellType = "SECRET_DOOR";
                     }
-                    map.Add(new KeyValuePair<uint, uint>(rowCounter, columnCounter), cellType);
+                    map.Add(new KeyValuePair<int, int>((int)rowCounter, (int)columnCounter), cellType);
 
                     cellType = "";
                     rowCounter += 1;
@@ -94,22 +97,21 @@ public class MapGeneration : MonoBehaviour
         Parse(width, height, map);
     }
 
-    private void Parse(uint width, uint height, Dictionary<KeyValuePair<uint, uint>, string> map)
-    {
-        // read the array by square of 3 by 3.
-        KeyValuePair<uint, uint> topLeft = new KeyValuePair<uint, uint>(0, 0);
-        KeyValuePair<uint, uint> topCenter = new KeyValuePair<uint, uint>(1, 0);
-        KeyValuePair<uint, uint> topRight = new KeyValuePair<uint, uint>(2, 0);
+    private void Parse(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
+    {        // read the array by square of 3 by 3.
+        KeyValuePair<int, int> topLeft = new KeyValuePair<int, int>(0, 0);
+        KeyValuePair<int, int> topCenter = new KeyValuePair<int, int>(1, 0);
+        KeyValuePair<int, int> topRight = new KeyValuePair<int, int>(2, 0);
 
-        KeyValuePair<uint, uint> midleLeft = new KeyValuePair<uint, uint>(0, 1);
-        KeyValuePair<uint, uint> center = new KeyValuePair<uint, uint>(1, 1);
-        KeyValuePair<uint, uint> midleRight = new KeyValuePair<uint, uint>(2, 1);
+        KeyValuePair<int, int> midleLeft = new KeyValuePair<int, int>(0, 1);
+        KeyValuePair<int, int> center = new KeyValuePair<int, int>(1, 1);
+        KeyValuePair<int, int> midleRight = new KeyValuePair<int, int>(2, 1);
 
-        KeyValuePair<uint, uint> bottomLeft = new KeyValuePair<uint, uint>(0, 2);
-        KeyValuePair<uint, uint> bottomCenter = new KeyValuePair<uint, uint>(1, 2);
-        KeyValuePair<uint, uint> bottomRight = new KeyValuePair<uint, uint>(2, 2);
+        KeyValuePair<int, int> bottomLeft = new KeyValuePair<int, int>(0, 2);
+        KeyValuePair<int, int> bottomCenter = new KeyValuePair<int, int>(1, 2);
+        KeyValuePair<int, int> bottomRight = new KeyValuePair<int, int>(2, 2);
 
-        List < KeyValuePair<uint, uint> > positions = new List<KeyValuePair<uint, uint>>();
+        List < KeyValuePair<int, int> > positions = new List<KeyValuePair<int, int>>();
         positions.Add(topLeft);
         positions.Add(topCenter);
         positions.Add(topRight);
@@ -123,20 +125,20 @@ public class MapGeneration : MonoBehaviour
         {
             for (int y = -1; y < height; ++y)
             {
-                Dictionary<KeyValuePair<uint, uint>, string> subSquare = new Dictionary<KeyValuePair<uint, uint>, string>();
+                Dictionary<KeyValuePair<int, int>, string> subSquare = new Dictionary<KeyValuePair<int, int>, string>();
 
-                for (uint i = 0; i < 3; ++i)
+                for (int i = 0; i < 3; ++i)
                 {
-                    for (uint j = 0; j < 3; ++j)
+                    for (int j = 0; j < 3; ++j)
                     {
                         if (x + i < 0 || y + j < 0 || x + i >= width || y + j >= height)
                         {
-                            subSquare.Add(new KeyValuePair<uint, uint>(i, j), "!"); //Doesn't exists in the map
+                            subSquare.Add(new KeyValuePair<int, int>(i, j), "TBC"); //Doesn't exists in the map
                             continue;
                         }
 
-                        KeyValuePair<uint, uint> mapKeyPair = new KeyValuePair<uint, uint>((uint)x + i, (uint)y + j);
-                        subSquare.Add(new KeyValuePair<uint, uint>(i, j), map[mapKeyPair]);
+                        KeyValuePair<int, int> mapKeyPair = new KeyValuePair<int, int>(x + i, y + j);
+                        subSquare.Add(new KeyValuePair<int, int>(i, j), map[mapKeyPair]);
                     }
                 }
 
@@ -145,7 +147,9 @@ public class MapGeneration : MonoBehaviour
                     || subSquare[center] == "DOOR" 
                     || subSquare[center] == "HERSE" 
                     || subSquare[center] == "SECRET_DOOR"
+                    || subSquare[center] == "SD"
                     || subSquare[center] == "SDD"
+                    || subSquare[center] == "SU"
                     || subSquare[center] == "SUU"
                     ) // we are on a path or in a room
                 {
@@ -156,6 +160,10 @@ public class MapGeneration : MonoBehaviour
                         {
                             subSquare[pos] = "WALL";
                         }
+                    }
+                    if(x == 0 || y == 0 || x >= width -2 || y >= height -2)
+                    {
+                        subSquare[center] = "WALL"; // avoid to have boundary floor.
                     }
                 }
                 else if(subSquare[center] == "TBC")
@@ -172,17 +180,17 @@ public class MapGeneration : MonoBehaviour
                 }
 
                 // write back
-                for (uint i = 0; i < 3; ++i)
+                for (int i = 0; i < 3; ++i)
                 {
-                    for (uint j = 0; j < 3; ++j)
+                    for (int j = 0; j < 3; ++j)
                     {
-                        KeyValuePair<uint, uint> squareKeyPair = new KeyValuePair<uint, uint>(i, j);
+                        KeyValuePair<int, int> squareKeyPair = new KeyValuePair<int, int>(i, j);
                         if (subSquare[squareKeyPair] == "!")
                         {
                             continue;
                         }
 
-                        KeyValuePair<uint, uint> mapKeyPair = new KeyValuePair<uint, uint>((uint)x + i, (uint)y + j);
+                        KeyValuePair<int, int> mapKeyPair = new KeyValuePair<int, int>(x + i, y + j);
                         map[mapKeyPair] = subSquare[squareKeyPair];
                     }
                 }
@@ -192,33 +200,28 @@ public class MapGeneration : MonoBehaviour
         GenerateMap(width, height, map);
 
     }
-    private void GenerateMap(uint width, uint height, Dictionary<KeyValuePair<uint, uint>, string> map)
+    private void GenerateMap(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {
-        for (int x = 0; x < width; ++x)
+        foreach(var item in map)
         {
-            for (int y = 0; y < height; ++y)
+            var cellType = item.Value;
+            Debug.Log(cellType);
+
+            if (cellType == "F"
+                || cellType == "DOOR"
+                || cellType == "HERSE"
+                || cellType == "SECRET_DOOR"
+                || cellType == "SD"
+                || cellType == "SDD"
+                || cellType == "SU"
+                || cellType == "SUU"
+                )
             {
-                KeyValuePair<uint, uint> mapKeyPair = new KeyValuePair<uint, uint>((uint)x, (uint)y);
-                var cellType = map[mapKeyPair];
-                Debug.Log(cellType);
-
-                if (cellType == "F"
-                    || cellType == "DOOR"
-                    || cellType == "HERSE"
-                    || cellType == "SECRET_DOOR"
-                    || cellType == "SDD"
-                    || cellType == "SUU"
-                    )
-                {
-                    backgroundLayer.SetTile(new Vector3Int(x, y, 0), backgroundTile);
-                }
-                else if (cellType == "WALL")
-                {
-                    middlegroundLayer.SetTile(new Vector3Int(x, y, 0), wallTile);
-                }
-
-                
-
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+            }
+            else if (cellType == "WALL")
+            {
+                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), wallTile);
             }
         }
     }
