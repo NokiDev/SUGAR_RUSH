@@ -16,7 +16,11 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if (collision_counter >= collision_counter_limit){
+
+        float rot = Mathf.Atan2(GetComponent<Rigidbody2D>().velocity.y, GetComponent<Rigidbody2D>().velocity.x) * Mathf.Rad2Deg;
+        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, rot + 180);
+
+        if (collision_counter >= collision_counter_limit){
             Destroy(gameObject);
         }
     }

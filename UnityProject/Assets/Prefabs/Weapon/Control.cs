@@ -26,6 +26,9 @@ public class Control : MonoBehaviour
         weapon_pos = gameObject.transform.position;
         weapon_vect = mouse_pos - weapon_pos;
 
+        float rot = Mathf.Atan2(weapon_vect.y, weapon_vect.x) * Mathf.Rad2Deg;
+        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, rot + 90);
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
             Shot();
         
