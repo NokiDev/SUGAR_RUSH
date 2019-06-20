@@ -441,24 +441,7 @@ public class MapGeneration : MonoBehaviour
 
 
         GenerateMap(width, height, map);
-        GenerateRoom();
-    }
-
-    private void GenerateRoom()
-    {
-        foreach(var item in rooms)
-        {
-            var width = item.Value.width;
-            var height = item.Value.height;
-            var corner = item.Value.leftCorner;
-            for(int x = (int)corner.x; x < corner.x + width; x++)
-            {
-                for (int y = (int)corner.y; y < corner.y + height; y++)
-                {
-                    backgroundLayer.SetTile(new Vector3Int(x, -y, 0), backgroundTile);
-                }
-            }
-        }
+       
     }
 
 
@@ -474,11 +457,11 @@ public class MapGeneration : MonoBehaviour
                 || cellType == "SUU"
                 )
             {
-               // backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
             }
             else if (cellType == "SU")
             {
-               // backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
                 startPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
             }
             else if (cellType == "WALL")
