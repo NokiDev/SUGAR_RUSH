@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
-        
-        
     }
 
     void TeleportPlayer(Vector3 startPosition)

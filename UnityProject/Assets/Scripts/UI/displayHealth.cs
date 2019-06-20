@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class displayHealth : MonoBehaviour
 {
     public Image healthImage;
+    public Image emptyImage;
     public Damageable damageable;
 
     private GameObject player;
@@ -22,33 +23,55 @@ public class displayHealth : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        increaseHealth(player.GetComponent<Damageable>().healthMax);
+        createHealth(player.GetComponent<Damageable>().healthMax);
     }
 
-    void increaseHealth(uint health)
+    void createHealth(uint health)
     {
-        Debug.Log((int)(health - healthDisplay));
-        for (int i = 0; i < (int) (health - healthDisplay); ++i)
+        for (int i = 0; i < (int)(health - healthDisplay); ++i)
         {
-            int offsetX = 40 * healthList.Count;
             Image newHealth = Instantiate(healthImage, gameObject.transform);
 
-            newHealth.GetComponent<RectTransform>().anchoredPosition = new Vector2(50 + offsetX, -50);
+            newHealth.GetComponent<RectTransform>().anchoredPosition = healthPos(healthList.Count);
             healthList.Add(newHealth);
+        }
+        healthDisplay = health;
+    }
+    void increaseHealth(uint health)
+    {
+        for (int i = 0; i < (int)(health - healthDisplay); ++i)
+        {
+            int healthIndex = (int)healthDisplay + i;
+            imageSwitch(healthIndex, healthImage);
         }
         healthDisplay = health;
     }
 
     void decreaseHealth(float timer, uint health)
     {
-        Debug.Log("health = " + health);
-        Debug.Log("healthD = " + healthDisplay);
-        for (int i = 0; i < (int) (healthDisplay - health); ++i)
+        for (int i = 0; i < (int)(healthDisplay - health); ++i)
         {
-            int lastIndex = healthList.Count - 1;
-            Destroy(healthList[lastIndex]);
-            healthList.RemoveAt(lastIndex);
+            int healthIndex = (int)healthDisplay - i - 1;
+            imageSwitch(healthIndex, emptyImage);
         }
         healthDisplay = health;
+    }
+
+    void imageSwitch(int index, Image image)
+    {
+        Destroy(healthList[index]);
+
+        Image newHealth = Instantiate(image, gameObject.transform);
+
+        newHealth.GetComponent<RectTransform>().anchoredPosition = healthPos(index);
+        healthList[index] = newHealth;
+    }
+
+    Vector2 healthPos(int index)
+    {
+        int offsetX = 40 * (index % 10);
+        int offsetY = -40 * (index / 10);
+
+        return new Vector2(50 + offsetX, -50 + offsetY);
     }
 }

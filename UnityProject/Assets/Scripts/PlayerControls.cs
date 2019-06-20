@@ -16,7 +16,7 @@ public class PlayerControls : MonoBehaviour
         if (isDamageable)
         {
             isDamageable.onHit += new Damageable.HitCb(BlockControl);
-            isDamageable.onDeath += new Damageable.DeathCb(() => { BlockControl(199999f); });
+            isDamageable.onDeath += new Damageable.DeathCb(() => { BlockControl(199999f, 0); });
         }
     }
 
@@ -61,7 +61,7 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    void BlockControl(float timer)
+    void BlockControl(float timer, uint health)
     {
         BlockFor(timer);
         movingScript.Stun(timer);
