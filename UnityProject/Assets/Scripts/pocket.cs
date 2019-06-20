@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class pocket : MonoBehaviour
+public class Pocket : MonoBehaviour
 {
     private int keys = 0;
+    public delegate void KeyEvent(int keys);
+    public KeyEvent keyAdded;
+    public KeyEvent keyUsed;
 
     public void addKey()
     {
         keys++;
+        keyAdded?.Invoke(1);
     }
 
     public int getKeys()
@@ -25,6 +29,7 @@ public class pocket : MonoBehaviour
         else
         {
             keys -= nbUsed;
+            keyUsed?.Invoke(nbUsed);
             return true;
         }
     }
