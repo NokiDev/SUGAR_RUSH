@@ -12,7 +12,7 @@ public class doorController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            if (collision.gameObject.GetComponent<pocket>().useKeys(keysRequired))
+            if (collision.gameObject.GetComponent<Pocket>().useKeys(keysRequired))
             {
                 Destroy(gameObject);
             }

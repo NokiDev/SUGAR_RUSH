@@ -8,7 +8,7 @@ public class key_trigger : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            collision.GetComponent<pocket>().addKey();
+            collision.GetComponent<Pocket>().addKey();
 
             Destroy(gameObject);
         }
