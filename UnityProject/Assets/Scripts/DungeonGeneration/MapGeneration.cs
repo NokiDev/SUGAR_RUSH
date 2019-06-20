@@ -4,6 +4,37 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public class Room
+{
+    public Vector2 leftCorner;
+    public int width;
+    public int height;
+
+    List<Vector2> doorEntrances = new List<Vector2>();
+
+    public Room(Vector2 leftCorner, int width, int height)
+    {
+        this.leftCorner = leftCorner;
+        this.width = width;
+        this.height = height;
+    }
+
+    public void AddDoorEntrance(Vector2 doorEntrance)
+    {
+        doorEntrances.Add(doorEntrance);
+    }
+
+    
+
+    public List<Vector2> GetDoorEntrance()
+    {
+        return doorEntrances;
+    }
+
+
+}
+
+
 public class MapGeneration : MonoBehaviour
 {
     /* 
@@ -16,7 +47,7 @@ public class MapGeneration : MonoBehaviour
      SU     Begining exit
      SUU    Exit Down Stairs
      */
-
+    private Dictionary<Vector2, Room> rooms = new Dictionary<Vector2, Room>();
 
     public Tile backgroundTile;
     public Tile wallTile;
@@ -70,18 +101,6 @@ public class MapGeneration : MonoBehaviour
                     {
                         cellType = "TBC";
                     }
-                    else if(cellType == "DR" || cellType == "DB" || cellType == "DL" || cellType == "DT") // Stqnds for Top, bottom, left and right.
-                    {
-                        cellType = "DOOR";
-                    }
-                    else if(cellType == "DPR" || cellType == "DPB" || cellType == "DPL" || cellType == "DPT")
-                    {
-                        cellType = "HERSE";
-                    }
-                    else if (cellType == "DSR" || cellType == "DSB" || cellType == "DSL" || cellType == "DST")
-                    {
-                        cellType = "SECRET_DOOR";
-                    }
                     map.Add(new KeyValuePair<int, int>((int)rowCounter, (int)columnCounter), cellType);
 
                     cellType = "";
@@ -102,6 +121,27 @@ public class MapGeneration : MonoBehaviour
         Parse(width, height, map);
     }
 
+
+
+    /*
+       0 1 1 
+       0 1 0
+       0 1 0
+
+       0 0 0
+       0 1 1
+       0 1 1
+
+       0 1 0
+       1 1 1
+       0 1 0 
+
+       0 0 0
+       1 1 1
+       1 1 1
+
+    */
+
     private void Parse(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {        // read the array by square of 3 by 3.
         KeyValuePair<int, int> topLeft = new KeyValuePair<int, int>(0, 0);
@@ -117,6 +157,8 @@ public class MapGeneration : MonoBehaviour
         KeyValuePair<int, int> bottomRight = new KeyValuePair<int, int>(2, 2);
 
         List < KeyValuePair<int, int> > positions = new List<KeyValuePair<int, int>>();
+        List < KeyValuePair<int, int> > diag = new List<KeyValuePair<int, int>>();
+        List < KeyValuePair<int, int> > cross = new List<KeyValuePair<int, int>>();
         positions.Add(topLeft);
         positions.Add(topCenter);
         positions.Add(topRight);
@@ -148,10 +190,10 @@ public class MapGeneration : MonoBehaviour
                 }
 
 
-                if(subSquare[center] == "F" 
-                    || subSquare[center] == "DOOR" 
-                    || subSquare[center] == "HERSE" 
-                    || subSquare[center] == "SECRET_DOOR"
+                if(subSquare[center] == "F"
+                    || subSquare[center] == "DR" || subSquare[center] == "DB" || subSquare[center] == "DL" || subSquare[center] == "DT"
+                    || subSquare[center] == "DPR" || subSquare[center] == "DPB" || subSquare[center] == "DPL" || subSquare[center] == "DPT"
+                    || subSquare[center] == "DSR" || subSquare[center] == "DSB" || subSquare[center] == "DSL" || subSquare[center] == "DST"
                     || subSquare[center] == "SD"
                     || subSquare[center] == "SDD"
                     || subSquare[center] == "SU"
@@ -166,6 +208,7 @@ public class MapGeneration : MonoBehaviour
                             subSquare[pos] = "WALL";
                         }
                     }
+
                     if(x == 0 || y == 0 || x >= width -2 || y >= height -2)
                     {
                         subSquare[center] = "WALL"; // avoid to have boundary floor.
@@ -202,9 +245,223 @@ public class MapGeneration : MonoBehaviour
             }
         }
 
-        GenerateMap(width, height, map);
+        // A room is near
+        // Detect room
+        for (int x = 0; x < width; ++x)
+        {
+            for (int y = 0; y < height; ++y)
+            {
+                KeyValuePair<int, int> mapKeyPair = new KeyValuePair<int, int>(x, y);
+                var cellType = map[mapKeyPair];
 
+                if (cellType == "DR" || cellType == "DB" || cellType == "DL" || cellType == "DT"
+                    || cellType == "DPR" || cellType == "DPB" || cellType == "DPL" || cellType == "DPT"
+                    || cellType == "DSR" || cellType == "DSB" || cellType == "DSL" || cellType == "DST"
+                )
+                {
+                    Vector2 roomCorner = Vector2.zero;
+                    Vector2 doorEntrance = Vector2.zero;
+                    int roomWidth = 0;
+                    int roomHeight = 0;
+
+                    if (cellType.Contains("L"))
+                    {
+                        // check room at posx -1
+                        var analyzedCell = "F";
+                        roomWidth = 0;
+                        while (analyzedCell == "F")
+                        {
+                            ++roomWidth;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x - roomWidth, y);
+                            analyzedCell = map[keyPair];
+                        }
+                        //
+                        // Pos - 1
+                        roomWidth--;
+                        var tmpHeight = 0;
+                        analyzedCell = "F";
+                        while (analyzedCell == "F")
+                        {
+                            ++tmpHeight;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x - roomWidth, y + tmpHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        tmpHeight--;
+
+                        roomHeight = 0;
+                        analyzedCell = "F";
+                        while (analyzedCell == "F")
+                        {
+                            roomHeight--;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x - roomWidth, y + roomHeight + tmpHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        roomHeight++;
+                        roomCorner = new Vector2(x - roomWidth, y + tmpHeight + roomHeight);
+                        doorEntrance = new Vector2(x - 1, y);
+                        //roomWidth += 1;
+                        roomHeight = -(roomHeight - 1);
+                        Debug.Log(x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
+
+                    }
+                    if (cellType.Contains("R"))
+                    {
+                        var analyzedCell = "F";
+                        roomWidth = 0;
+                        while (analyzedCell == "F")
+                        {
+                            ++roomWidth;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x + 1 + roomWidth, y);
+                            analyzedCell = map[keyPair];
+                        }
+                        roomWidth--;
+                        var tmpHeight = 0;
+                        analyzedCell = "F";
+                        while (analyzedCell == "F")
+                        {
+                            ++tmpHeight;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x + 1 + roomWidth, y + tmpHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        tmpHeight--;
+
+                        roomHeight = 0;
+                        analyzedCell = "F";
+                        while(analyzedCell == "F")
+                        {
+                            roomHeight--;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x + 1 + roomWidth, y + tmpHeight + roomHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        roomHeight++;
+
+                        roomCorner = new Vector2(x + 1, y + tmpHeight + roomHeight);
+                        doorEntrance = new Vector2(x + 1, y);
+
+                        roomWidth += 1;
+                        roomHeight = -(roomHeight - 1);
+
+                        Debug.Log( x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
+
+                        // check room at posx + 1
+                    }
+                    if (cellType.Contains("B"))
+                    {
+                        // check room at posx -1
+                        var analyzedCell = "F";
+                        roomHeight = 0;
+                        while (analyzedCell == "F")
+                        {
+                            ++roomHeight;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x, y +  1 + roomHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        roomHeight--;
+                        var tmpWidth = 0;
+                        analyzedCell = "F";
+                        while (analyzedCell == "F")
+                        {
+                            ++tmpWidth;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x + tmpWidth, y + 1 + roomHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        tmpWidth--;
+
+                        roomWidth = 0;
+                        analyzedCell = "F";
+                        while (analyzedCell == "F")
+                        {
+                            roomWidth--;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x + tmpWidth + roomWidth, y + 1 + roomHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        roomWidth++;
+                        
+                        roomCorner = new Vector2(x + tmpWidth + roomWidth, y + 1);
+                        doorEntrance = new Vector2(x, y + 1);
+                        roomWidth = -(roomWidth - 1);
+                        roomHeight++;
+
+                        Debug.Log(x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
+
+                        //check room at posy -1
+                    }
+                    if (cellType.Contains("T"))
+                    {
+                        // check room at posx -1
+                        var analyzedCell = "F";
+                        roomHeight = 0;
+                        while (analyzedCell == "F")
+                        {
+                            ++roomHeight;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x, y - roomHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        roomHeight--;
+                        var tmpWidth = 0;
+                        analyzedCell = "F";
+                        while (analyzedCell == "F")
+                        {
+                            ++tmpWidth;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x + tmpWidth, y - roomHeight);
+                            analyzedCell = map[keyPair];
+                        }
+                        tmpWidth--;
+
+                        roomWidth = 0;
+                        analyzedCell = "F";
+                        while (analyzedCell == "F")
+                        {
+                            roomWidth--;
+                            KeyValuePair<int, int> keyPair = new KeyValuePair<int, int>(x + tmpWidth + roomWidth, y - roomHeight);
+                            analyzedCell = map[keyPair];
+                        }
+
+                        roomWidth++;
+                        
+                        roomCorner = new Vector2(x + tmpWidth + roomWidth, y - roomHeight);
+                        doorEntrance = new Vector2(x, y - 1);
+
+                        roomWidth = -(roomWidth - 1);
+                        //roomHeight++;
+                        Debug.Log(x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
+                    }
+
+                    if (! rooms.ContainsKey(roomCorner))
+                    {
+                        rooms.Add(roomCorner, new Room(roomCorner, roomWidth, roomHeight));
+                    }
+
+                    var room = rooms[roomCorner];
+                    room.AddDoorEntrance(doorEntrance);
+
+                }
+            }
+        }
+
+
+        GenerateMap(width, height, map);
+        GenerateRoom();
     }
+
+    private void GenerateRoom()
+    {
+        foreach(var item in rooms)
+        {
+            var width = item.Value.width;
+            var height = item.Value.height;
+            var corner = item.Value.leftCorner;
+            for(int x = (int)corner.x; x < corner.x + width; x++)
+            {
+                for (int y = (int)corner.y; y < corner.y + height; y++)
+                {
+                    backgroundLayer.SetTile(new Vector3Int(x, -y, 0), backgroundTile);
+                }
+            }
+        }
+    }
+
+
     private void GenerateMap(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {
         Vector3 startPosition = Vector3.zero;
@@ -217,11 +474,11 @@ public class MapGeneration : MonoBehaviour
                 || cellType == "SUU"
                 )
             {
-                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+               // backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
             }
             else if (cellType == "SU")
             {
-                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+               // backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
                 startPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
             }
             else if (cellType == "WALL")
@@ -234,7 +491,7 @@ public class MapGeneration : MonoBehaviour
                 || cellType == "HERSE"
                 || cellType == "SECRET_DOOR")
             {
-                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+               // backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
                 middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
             }
         }
