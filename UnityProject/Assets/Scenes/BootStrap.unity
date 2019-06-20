@@ -120,12 +120,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &103253358 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5186722168287089337, guid: 7e09f54bfe09ac946b76498246cfc85a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1423032237}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &119895759
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,6 +152,9 @@ MonoBehaviour:
   backgroundTile: {fileID: 11400000, guid: 58f3c12d06bd8f54a9215d8a512b1638, type: 2}
   wallTile: {fileID: 11400000, guid: 3005e690848ee4040b3b172ddf1368db, type: 2}
   doorTile: {fileID: 11400000, guid: ed7abf3c296962e48add3236ae8309a0, type: 2}
+  trashTile: {fileID: 11400000, guid: c8350b0dda674af4b9e9f397df1af789, type: 2}
+  enemyPrefab: {fileID: 4207014380795556083, guid: c4c743d1624253b40aad063823072a2e,
+    type: 3}
   lightCubePrefab: {fileID: 7311230335882477093, guid: a0bfb4ed82b43c04ca1964291d0591f7,
     type: 3}
   backgroundLayer: {fileID: 1194318057}
@@ -2640,7 +2637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebcbab9db43fdcf4b89b78fff0d57b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 103253358}
+  player: {fileID: 0}
   Speed: 1
   StepBeforeCameraMove: 1
 --- !u!1839735485 &1850631205 stripped

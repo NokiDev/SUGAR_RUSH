@@ -53,6 +53,9 @@ public class MapGeneration : MonoBehaviour
     public Tile wallTile;
     public Tile doorTile;
 
+    public Tile trashTile;
+    public GameObject enemyPrefab;
+
     public GameObject lightCubePrefab;
     public Tilemap backgroundLayer;
     public Tilemap middlegroundLayer;
@@ -301,8 +304,6 @@ public class MapGeneration : MonoBehaviour
                         doorEntrance = new Vector2(x - 1, y);
                         //roomWidth += 1;
                         roomHeight = -(roomHeight - 1);
-                        Debug.Log(x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
-
                     }
                     if (cellType.Contains("R"))
                     {
@@ -341,7 +342,6 @@ public class MapGeneration : MonoBehaviour
                         roomWidth += 1;
                         roomHeight = -(roomHeight - 1);
 
-                        Debug.Log( x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
 
                         // check room at posx + 1
                     }
@@ -382,8 +382,6 @@ public class MapGeneration : MonoBehaviour
                         roomWidth = -(roomWidth - 1);
                         roomHeight++;
 
-                        Debug.Log(x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
-
                         //check room at posy -1
                     }
                     if (cellType.Contains("T"))
@@ -423,8 +421,6 @@ public class MapGeneration : MonoBehaviour
                         doorEntrance = new Vector2(x, y - 1);
 
                         roomWidth = -(roomWidth - 1);
-                        //roomHeight++;
-                        Debug.Log(x + " - " + y + " Room found " + roomCorner.x + " - " + roomCorner.y + " ! " + roomWidth + " - " + roomHeight);
                     }
 
                     if (! rooms.ContainsKey(roomCorner))
@@ -438,6 +434,7 @@ public class MapGeneration : MonoBehaviour
                 }
             }
         }
+
 
 
         GenerateMap(width, height, map);
@@ -478,6 +475,66 @@ public class MapGeneration : MonoBehaviour
                 middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
             }
         }
+
+        foreach(var room in rooms)
+        {
+            int rWidth = room.Value.width;
+            int rHeight = room.Value.height;
+            Vector2 rCorner = room.Key;
+            var entrances = room.Value.GetDoorEntrance();
+
+            List<Vector2> borders = new List<Vector2>();
+            List<Vector2> inner = new List<Vector2>();
+
+            borders.Add(new Vector2(rCorner.x, rCorner.y));
+            borders.Add(new Vector2(rCorner.x, rCorner.y + rHeight - 1));
+            borders.Add(new Vector2(rCorner.x + rWidth -1, rCorner.y));
+            borders.Add(new Vector2(rCorner.x + rWidth -1, rCorner.y + rHeight -1));
+
+            for (float x = rCorner.x + 1; x < rCorner.x + rWidth -1; ++x)
+            {
+                borders.Add(new Vector2(x, rCorner.y));
+                borders.Add(new Vector2(x, rCorner.y + rHeight-1));
+                for (float y = rCorner.y + 1; y < rCorner.y + rHeight - 1; ++y)
+                {
+                    borders.Add(new Vector2(rCorner.x, y));
+                    borders.Add(new Vector2(rCorner.x + rWidth -1, y));
+                    inner.Add(new Vector2(x, y));
+                }
+            }
+            //Be sure entrance won't get blocked;
+            foreach(var entrance in entrances)
+            {
+                borders.Remove(entrance);
+            }
+
+            int area = (rWidth * rHeight) / 5;
+            var rand = new System.Random();
+            var randTrash = rand.Next(1, area);
+            // Trash are only set next to a border;
+            List<Vector2> tmpList = new List<Vector2>();
+            
+            for(int trashIndex = 0; trashIndex < randTrash; ++trashIndex)
+            {
+                var positionIndex = rand.Next(0, borders.Count);
+                middlegroundLayer.SetTile(new Vector3Int((int)(borders[positionIndex].x), (int)(-borders[positionIndex].y), 0), trashTile);
+                Debug.Log("Generate Trash at : " + borders[positionIndex]);
+                borders.RemoveAt(positionIndex);
+            }
+
+            // Be sure, there is actually an inner in the room (e.g for 2*2 room)
+            if(inner.Count > 0)
+            {
+                var randEnemy = rand.Next(1,  area);
+                for(int enemyIndex = 0; enemyIndex < randEnemy; ++enemyIndex)
+                {
+                    var positionIndex = rand.Next(0, inner.Count);
+                    var enemy = Instantiate(enemyPrefab, new Vector3(inner[positionIndex].x + 0.5f, - inner[positionIndex].y + 0.5f, 0), Quaternion.identity, middlegroundLayer.transform);
+                    
+                }
+            }
+        }
+
 
         onLoaded?.Invoke(startPosition);
     }
