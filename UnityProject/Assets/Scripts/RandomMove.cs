@@ -52,10 +52,10 @@ public class RandomMove : MonoBehaviour
         actualMovingDirection = Mathf.FloorToInt(Random.Range(0, MovingDirection.Length));
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    ChooseDirection();
-    //}
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        ChooseDirection();
+    }
 
 
 }
