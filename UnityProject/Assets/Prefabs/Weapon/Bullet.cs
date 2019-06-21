@@ -37,19 +37,12 @@ public class Bullet : MonoBehaviour
         bullet_effect.transform.rotation = Quaternion.Euler(0f, 0f, rot -90);
 
         bullet_effect.Play();
-        StartCoroutine("destroy_effect",bullet_effect);
+        
         var damageable = collision.gameObject.GetComponent<Damageable>();
         if(damageable != null)
         {
             damageable.DealDamage(bullet_damage);
         }
-    }
-
-    private IEnumerator destroy_effect (ParticleSystem bullet_effect)
-    {
-        //yield return new WaitUntil(() => {return bullet_effect.isStopped; });
-        yield return new WaitForSeconds(1);
-        GameObject.Destroy(bullet_effect.gameObject);
     }
 
 }
