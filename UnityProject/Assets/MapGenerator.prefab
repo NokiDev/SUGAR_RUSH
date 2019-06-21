@@ -55,6 +55,8 @@ MonoBehaviour:
   wallTile: {fileID: 11400000, guid: 3005e690848ee4040b3b172ddf1368db, type: 2}
   doorTile: {fileID: 11400000, guid: ed7abf3c296962e48add3236ae8309a0, type: 2}
   trashTile: {fileID: 11400000, guid: c8350b0dda674af4b9e9f397df1af789, type: 2}
+  trashPrefab: {fileID: 6220140632152402501, guid: fd969577eca78fa47afae4f1b7f8a812,
+    type: 3}
   vomiTile: {fileID: 11400000, guid: 74fbbb6ef3b98d544ad51ae45e4b24b1, type: 2}
   exitTile: {fileID: 11400000, guid: ce50e1ce776fb694f8794f0f76e388fb, type: 2}
   exitPrefab: {fileID: 4853496782762227667, guid: 8536dd8a935f8b64c8b9ba32677a5be8,

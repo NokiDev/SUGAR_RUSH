@@ -65,6 +65,7 @@ public class MapGeneration : MonoBehaviour
     public Tile wallTile;
     public Tile doorTile;
     public Tile trashTile;
+    public GameObject trashPrefab;
     public Tile vomiTile;
     public Tile exitTile;
     public GameObject exitPrefab;
@@ -525,8 +526,10 @@ public class MapGeneration : MonoBehaviour
             {
                 var positionIndex = rand.Next(0, borders.Count -1);
                 collidegroundLayer.SetTile(new Vector3Int((int)(borders[positionIndex].x), (int)(-borders[positionIndex].y), 0), trashTile);
-               // var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
-               // lightCube.transform.position = new Vector3((borders[positionIndex].x) + 0.5f, -(borders[positionIndex].y) + 0.5f, lightCube.transform.position.z);
+                var trash = Instantiate(trashPrefab, new Vector3(borders[positionIndex].x + 0.5f, -borders[positionIndex].y + 0.5f, 0), Quaternion.identity, collidegroundLayer.transform);
+
+                // var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
+                // lightCube.transform.position = new Vector3((borders[positionIndex].x) + 0.5f, -(borders[positionIndex].y) + 0.5f, lightCube.transform.position.z);
                 borders.RemoveAt(positionIndex);
             }
 
@@ -573,5 +576,10 @@ public class MapGeneration : MonoBehaviour
 
         onLoaded?.Invoke(startPosition, endPosition);
         
+    }
+
+    public void deleteTile(Vector3Int pos)
+    {
+        collidegroundLayer.SetTile(pos, null);
     }
 }
