@@ -38,6 +38,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
 
+    public void StartNormalGame()
+    {
+   
+        SceneManager.LoadScene(4, LoadSceneMode.Single);
+    }
+
+
     void TeleportPlayer(Vector3 startPosition)
     {
         // Load the game scene in additive mode.
