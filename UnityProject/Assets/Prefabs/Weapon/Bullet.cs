@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour
 {
     public int collision_counter_limit = 0;
     private int collision_counter = 0;
+    public uint bullet_damage = 1;
+
 
     public ParticleSystem wall_collision_particule;
     public ParticleSystem human_collision_particule;
@@ -36,6 +38,11 @@ public class Bullet : MonoBehaviour
 
         bullet_effect.Play();
         StartCoroutine("destroy_effect",bullet_effect);
+        var damageable = collision.gameObject.GetComponent<Damageable>();
+        if(damageable != null)
+        {
+            damageable.DealDamage(bullet_damage);
+        }
     }
 
     private IEnumerator destroy_effect (ParticleSystem bullet_effect)

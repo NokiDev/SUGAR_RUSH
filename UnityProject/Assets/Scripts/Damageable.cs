@@ -6,6 +6,7 @@ public class Damageable : MonoBehaviour
 {
     public uint healthMax = 1;
     public float invicibilityTimer = 1.5f;
+    public float timeBeforeDestroy = 1f;
     public delegate void DeathCb();
     public DeathCb onDeath;
     public delegate void HitCb(float invicibilityTimer, uint health);
