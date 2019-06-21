@@ -97,8 +97,7 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-        Debug.Log("PERDU");
-        // TODO Display end game screen
+        SceneManager.LoadScene(3);
     }
 
 
