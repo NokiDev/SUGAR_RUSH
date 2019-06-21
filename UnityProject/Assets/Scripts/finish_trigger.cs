@@ -9,8 +9,8 @@ public class finish_trigger : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            Debug.Log("FINISH !!!");
-            SceneManager.LoadScene("LeoScene");
+            var gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            gameManager.LoadAnotherLevel();
 
         }
     }

@@ -12,6 +12,7 @@ TagManager:
   - blue_line
   - LocationHelper
   - bullet
+  - mapGenerator
   layers:
   - Default
   - TransparentFX

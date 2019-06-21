@@ -6,10 +6,11 @@ using UnityEngine.Tilemaps;
 
 public class Room
 {
+    
+
     public Vector2 leftCorner;
     public int width;
     public int height;
-
     List<Vector2> doorEntrances = new List<Vector2>();
 
     public Room(Vector2 leftCorner, int width, int height)
@@ -49,13 +50,25 @@ public class MapGeneration : MonoBehaviour
      */
     private Dictionary<Vector2, Room> rooms = new Dictionary<Vector2, Room>();
 
+    [Range(0, 30)]
+    public float randGlobalModifier;
+
+    [Range(0, 2)]
+    public float randEnemyModifier;
+    public uint maxEnemyByRooms;
+    [Range(0, 3)]
+    public float randTrashModifier;
+    public uint maxTrashByRoom;
+
+    public GameObject astarGO;
     public Tile backgroundTile;
     public Tile wallTile;
     public Tile doorTile;
-
     public Tile trashTile;
+    public Tile vomiTile;
+    public Tile exitTile;
+    public GameObject exitPrefab;
     public GameObject enemyPrefab;
-
     public GameObject lightCubePrefab;
     public Tilemap backgroundLayer;
     public Tilemap middlegroundLayer;
@@ -67,14 +80,13 @@ public class MapGeneration : MonoBehaviour
     private uint width;
     private uint height;
 
-    public delegate void Loader(Vector3 startPosition);
+    public delegate void Loader(Vector3 startPosition, Vector3 endPosition);
     public Loader onLoaded;
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        LoadMap();
+        DontDestroyOnLoad(this);
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -123,27 +135,6 @@ public class MapGeneration : MonoBehaviour
 
         Parse(width, height, map);
     }
-
-
-
-    /*
-       0 1 1 
-       0 1 0
-       0 1 0
-
-       0 0 0
-       0 1 1
-       0 1 1
-
-       0 1 0
-       1 1 1
-       0 1 0 
-
-       0 0 0
-       1 1 1
-       1 1 1
-
-    */
 
     private void Parse(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {        // read the array by square of 3 by 3.
@@ -212,10 +203,7 @@ public class MapGeneration : MonoBehaviour
                         }
                     }
 
-                    if(x == 0 || y == 0 || x >= width -2 || y >= height -2)
-                    {
-                        subSquare[center] = "WALL"; // avoid to have boundary floor.
-                    }
+                    
                 }
                 else if(subSquare[center] == "TBC")
                 {
@@ -444,12 +432,16 @@ public class MapGeneration : MonoBehaviour
 
     private void GenerateMap(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {
+        // TODO Configure Astar
+        //astarGO.GetComponent<AstarPath>().;
+
+
         Vector3 startPosition = Vector3.zero;
-        foreach(var item in map)
+        Vector3 endPosition = Vector3.zero;
+        foreach (var item in map)
         {
             var cellType = item.Value;
             if (cellType == "F"
-                || cellType == "SD"
                 || cellType == "SDD"
                 || cellType == "SUU"
                 )
@@ -458,8 +450,15 @@ public class MapGeneration : MonoBehaviour
             }
             else if (cellType == "SU")
             {
-                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
                 startPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
+            }
+            else if(cellType == "SD")
+            {
+                endPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
+                var enemy = Instantiate(exitPrefab, new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0), Quaternion.identity, middlegroundLayer.transform);
+
             }
             else if (cellType == "WALL")
             {
@@ -471,7 +470,7 @@ public class MapGeneration : MonoBehaviour
                 || cellType == "HERSE"
                 || cellType == "SECRET_DOOR")
             {
-               // backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
                 middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
             }
         }
@@ -499,6 +498,7 @@ public class MapGeneration : MonoBehaviour
                 {
                     borders.Add(new Vector2(rCorner.x, y));
                     borders.Add(new Vector2(rCorner.x + rWidth -1, y));
+                    
                     inner.Add(new Vector2(x, y));
                 }
             }
@@ -508,34 +508,64 @@ public class MapGeneration : MonoBehaviour
                 borders.Remove(entrance);
             }
 
-            int area = (rWidth * rHeight) / 5;
+            int area = (rWidth * rHeight) / (int)randGlobalModifier;
             var rand = new System.Random();
-            var randTrash = rand.Next(1, area);
+            var randTrash = rand.Next(1, (int)(area*randTrashModifier));
             // Trash are only set next to a border;
             List<Vector2> tmpList = new List<Vector2>();
-            
-            for(int trashIndex = 0; trashIndex < randTrash; ++trashIndex)
+            if (randTrash > maxTrashByRoom)
+                randTrash = (int)maxTrashByRoom;
+
+            for (int trashIndex = 0; trashIndex < randTrash; ++trashIndex)
             {
-                var positionIndex = rand.Next(0, borders.Count);
+                var positionIndex = rand.Next(0, borders.Count -1);
                 middlegroundLayer.SetTile(new Vector3Int((int)(borders[positionIndex].x), (int)(-borders[positionIndex].y), 0), trashTile);
-                Debug.Log("Generate Trash at : " + borders[positionIndex]);
+               // var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
+               // lightCube.transform.position = new Vector3((borders[positionIndex].x) + 0.5f, -(borders[positionIndex].y) + 0.5f, lightCube.transform.position.z);
                 borders.RemoveAt(positionIndex);
             }
 
             // Be sure, there is actually an inner in the room (e.g for 2*2 room)
             if(inner.Count > 0)
             {
-                var randEnemy = rand.Next(1,  area);
+                var randEnemy = rand.Next(1,  (int)(area * randEnemyModifier));
+                if (randEnemy > maxEnemyByRooms)
+                    randEnemy = (int)maxEnemyByRooms;
                 for(int enemyIndex = 0; enemyIndex < randEnemy; ++enemyIndex)
                 {
-                    var positionIndex = rand.Next(0, inner.Count);
-                    var enemy = Instantiate(enemyPrefab, new Vector3(inner[positionIndex].x + 0.5f, - inner[positionIndex].y + 0.5f, 0), Quaternion.identity, middlegroundLayer.transform);
+                    var positionIndex = rand.Next(0, inner.Count -1);
+                    var rotation = rand.Next(0, 3);
+                    Quaternion rot = Quaternion.identity;
+                    switch(rotation)
+                    {
+                        case 0:
+                            rot = Quaternion.Euler(0f, 0f, -90f);
+                            break;
+                        case 1:
+                            rot = Quaternion.Euler(0f, 0f, -180f);
+                            break;
+                        case 2:
+                            rot = Quaternion.Euler(0f, 0f, -270f);
+                            break;
+                        case 3:
+                            Quaternion.Euler(0f, 0f, 0f);
+                            break;
+                    }
+                    var enemy = Instantiate(enemyPrefab, new Vector3(inner[positionIndex].x + 0.5f, - inner[positionIndex].y + 0.5f, 0), rot, middlegroundLayer.transform);
                     
                 }
+            }
+
+            var randvomi = rand.Next(0, 1);
+            for (int vomiIndex = 0; vomiIndex < randvomi; ++vomiIndex)
+            {
+                var positionIndex = rand.Next(0, entrances.Count - 1);
+                middlegroundLayer.SetTile(new Vector3Int((int)(entrances[positionIndex].x), (int)(-entrances[positionIndex].y), 0), vomiTile);
             }
         }
 
 
-        onLoaded?.Invoke(startPosition);
+        onLoaded?.Invoke(startPosition, endPosition);
+        
     }
 }
