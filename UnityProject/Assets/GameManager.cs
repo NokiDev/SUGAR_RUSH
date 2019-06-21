@@ -34,6 +34,11 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     public void StartGame()
     {
         playerInstance = Instantiate(playerPrefab, this.gameObject.transform);
