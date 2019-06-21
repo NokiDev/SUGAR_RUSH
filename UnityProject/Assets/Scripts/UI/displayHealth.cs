@@ -7,23 +7,21 @@ public class displayHealth : MonoBehaviour
 {
     public Image healthImage;
     public Image emptyImage;
-    public Damageable damageable;
 
     private GameObject player;
+    private Damageable damageable;
     private List<Image> healthList = new List<Image>();
     private uint healthDisplay = 0;
 
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        damageable = player.GetComponent<Damageable>();
+        createHealth(damageable.healthMax);
+
         damageable.onHit += decreaseHealth;
         damageable.onDeath += () => { decreaseHealth(0, 0); };
         damageable.onHeal += increaseHealth;
-    }
-
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-        createHealth(player.GetComponent<Damageable>().healthMax);
     }
 
     void createHealth(uint health)

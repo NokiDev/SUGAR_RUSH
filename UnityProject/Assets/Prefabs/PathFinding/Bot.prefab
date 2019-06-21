@@ -65,11 +65,14 @@ PolygonCollider2D:
       - {x: 0.79028577, y: 4.338527}
       - {x: -1.213387, y: 4.3451257}
       - {x: -1.8741933, y: 3.1011531}
-      - {x: -1.6864191, y: 2.724554}
+      - {x: -1.8703041, y: 3.1193736}
       - {x: -0.9138927, y: 4.33612}
-      - {x: -0.8697578, y: 4.41624}
+      - {x: -1.182127, y: 4.3283863}
       - {x: -1.2087731, y: 4.3451257}
-      - {x: -1.759794, y: 3.7757208}
+      - {x: -2.0863948, y: 3.446008}
+      - {x: -1.8715849, y: 2.8676744}
+      - {x: -1.1280117, y: 4.3217707}
+      - {x: -2.2185855, y: 3.7269132}
       - {x: -1.6810122, y: 2.7765603}
       - {x: -0.35057467, y: 0.27576324}
       - {x: -0.24082167, y: -0.082393594}
@@ -128,7 +131,7 @@ GameObject:
   - component: {fileID: 4207014380795556087}
   - component: {fileID: 4207014380795556080}
   - component: {fileID: 4207014380795556081}
-  - component: {fileID: 4207014380795556043}
+  - component: {fileID: 1044724125785703030}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Untagged
@@ -315,7 +318,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
---- !u!114 &4207014380795556043
+--- !u!114 &1044724125785703030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,9 +327,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4207014380795556083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caff5157e97cbc14eb42b35c6af89380, type: 3}
+  m_Script: {fileID: 11500000, guid: ae287730fb4301a4bbe39596403c171e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocationsLists: []
-  LocationStep: 0
-  detector: {fileID: 1352274898}
+  detector: {fileID: 0}

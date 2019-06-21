@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3031135170757531470
+--- !u!1 &24006729365359979
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3031135170757531472}
-  - component: {fileID: 3031135170757531473}
+  - component: {fileID: 24006729365359973}
+  - component: {fileID: 24006729365359978}
   m_Layer: 0
-  m_Name: MapGenerator
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3031135170757531472
+--- !u!4 &24006729365359973
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3031135170757531470}
+  m_GameObject: {fileID: 24006729365359979}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,26 +31,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3031135170757531473
+--- !u!114 &24006729365359978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3031135170757531470}
+  m_GameObject: {fileID: 24006729365359979}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b417522ba82fec646a76df552e60ce89, type: 3}
+  m_Script: {fileID: 11500000, guid: 28554ed202e085843993db2865aa35b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundTile: {fileID: 11400000, guid: 58f3c12d06bd8f54a9215d8a512b1638, type: 2}
-  wallTile: {fileID: 11400000, guid: 3005e690848ee4040b3b172ddf1368db, type: 2}
-  doorTile: {fileID: 11400000, guid: ed7abf3c296962e48add3236ae8309a0, type: 2}
-  lightCubePrefab: {fileID: 7311230335882477093, guid: a0bfb4ed82b43c04ca1964291d0591f7,
+  generator: {fileID: 0}
+  playerPrefab: {fileID: 5186722168488632675, guid: ca607af57b983c84898b0a192b2f7c97,
     type: 3}
-  backgroundLayer: {fileID: 0}
-  middlegroundLayer: {fileID: 0}
-  lightLayer: {fileID: 0}
-  foregroundLayer: {fileID: 0}
-  pathPrefix: /Scripts/DungeonGeneration/Maps/
-  fileName: test2
