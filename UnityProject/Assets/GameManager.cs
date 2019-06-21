@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -47,6 +51,8 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         SceneManager.LoadScene(0);
+        GameObject.Destroy(this.generator.gameObject);
+        GameObject.Destroy(this.gameObject);
     }
 
 
@@ -60,7 +66,7 @@ public class GameManager : MonoBehaviour
     public void LoadAnotherLevel()
     {
         // Be sure to unsubscribe.
-        Destroy(generator.gameObject);
+        GameObject.Destroy(generator.gameObject);
         SceneManager.LoadScene(1);
     }
 
@@ -120,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LoadMap()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
         generator.LoadMap();
         
     }

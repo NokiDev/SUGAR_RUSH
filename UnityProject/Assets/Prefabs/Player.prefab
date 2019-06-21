@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1133470137926676670
 Transform:
   m_ObjectHideFlags: 0
@@ -255,9 +255,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b18688b0c8203143bff89be04896fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthMax: 1
-  invicibilityTimer: 1
-  health: 1
+  healthMax: 3
+  invicibilityTimer: 0.1
+  timeBeforeDestroy: 0.5
+  health: 3
 --- !u!114 &4635999889519909802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +413,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5186722168488632673}
     m_Modifications:
+    - target: {fileID: -3890655376767255378, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
+        type: 3}
+      propertyPath: m_Name
+      value: Point Light
+      objectReference: {fileID: 0}
+    - target: {fileID: -5553899170941500166, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8121389572083381553, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
         type: 3}
       propertyPath: m_Name
@@ -476,16 +487,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Intensity
       value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: -3890655376767255378, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
-        type: 3}
-      propertyPath: m_Name
-      value: Point Light
-      objectReference: {fileID: 0}
-    - target: {fileID: -5553899170941500166, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efa9d279aa3c9f14ab9fd04e9d520ddb, type: 3}

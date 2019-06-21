@@ -88,6 +88,10 @@ public class MapGeneration : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
     }
     // Update is called once per frame
     void Update()
