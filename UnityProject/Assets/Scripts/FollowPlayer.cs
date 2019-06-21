@@ -22,19 +22,23 @@ public class FollowPlayer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        LimiteXUp = player.position.x + StepBeforeCameraMove;
-        LimiteXDown = player.position.x - StepBeforeCameraMove;
-
-        LimiteYUp = player.position.y + StepBeforeCameraMove;
-        LimiteYDown = player.position.y - StepBeforeCameraMove;
-        bool WillMove = transform.position.x < LimiteXUp || transform.position.x > LimiteXDown || transform.position.y < LimiteYUp || transform.position.y > LimiteYDown;
-
-        if (WillMove)
+        if(player != null)
         {
-            transform.position = Vector3.Lerp(transform.position, player.position, Speed);
-            transform.position += new Vector3(0, 0, -10);
+            LimiteXUp = player.position.x + StepBeforeCameraMove;
+            LimiteXDown = player.position.x - StepBeforeCameraMove;
+
+            LimiteYUp = player.position.y + StepBeforeCameraMove;
+            LimiteYDown = player.position.y - StepBeforeCameraMove;
+            bool WillMove = transform.position.x < LimiteXUp || transform.position.x > LimiteXDown || transform.position.y < LimiteYUp || transform.position.y > LimiteYDown;
+
+            if (WillMove)
+            {
+                transform.position = Vector3.Lerp(transform.position, player.position, Speed);
+                transform.position += new Vector3(0, 0, -10);
+            }
+        
+        
+
         }
-        
-        
     }
 }

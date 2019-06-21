@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     // The player, Null at start. but for the demo it is already set.
     public MapGeneration generator;
     public GameObject playerPrefab;
+    public float countdown = 120f;
+    private Timer timer;
     private uint currentLevelAchieved = 0;
     private GameObject playerInstance;
 
@@ -24,8 +26,17 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void StartGame()
@@ -35,6 +46,20 @@ public class GameManager : MonoBehaviour
         playerInstance.GetComponent<Damageable>().onDeath += GameOver;
         SceneManager.LoadScene(1, LoadSceneMode.Single);
     }
+
+    public void StartNormalGame()
+    {
+        // FIXME react to event in game canvas.
+        SceneManager.LoadScene(4, LoadSceneMode.Single);
+    }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene(0);
+        GameObject.Destroy(this.generator.gameObject);
+        GameObject.Destroy(this.gameObject);
+    }
+
 
     void TeleportPlayer(Vector3 startPosition)
     {
@@ -46,7 +71,7 @@ public class GameManager : MonoBehaviour
     public void LoadAnotherLevel()
     {
         // Be sure to unsubscribe.
-        Destroy(generator.gameObject);
+        GameObject.Destroy(generator.gameObject);
         SceneManager.LoadScene(1);
     }
 
@@ -81,22 +106,32 @@ public class GameManager : MonoBehaviour
         else if (scene.buildIndex == 2) // Game
         {
             generator.gameObject.transform.GetChild(0).gameObject.SetActive(true); // One child, grid
+            timer = GameObject.FindGameObjectWithTag("ingameUI").GetComponentInChildren<Timer>();
+            timer.onEnd += GameOver;
+
+            timer.reset(countdown);
+            timer.start();
         }
         else if (scene.buildIndex == 3) // Game Over
         {
 
         }
+        else if (scene.buildIndex == 4)
+        {
+            playerInstance = GameObject.FindGameObjectWithTag("Player");
+            playerInstance.GetComponent<Damageable>().onDeath += GameOver;
+        }
     }
 
     void GameOver()
     {
-        // TODO Display end game screen
+        SceneManager.LoadScene(3);
     }
 
 
     IEnumerator LoadMap()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2.5f);
         generator.LoadMap();
         
     }

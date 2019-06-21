@@ -65,12 +65,14 @@ public class MapGeneration : MonoBehaviour
     public Tile wallTile;
     public Tile doorTile;
     public Tile trashTile;
+    public GameObject trashPrefab;
     public Tile vomiTile;
     public Tile exitTile;
     public GameObject exitPrefab;
     public GameObject enemyPrefab;
     public GameObject lightCubePrefab;
     public Tilemap backgroundLayer;
+    public Tilemap collidegroundLayer;
     public Tilemap middlegroundLayer;
     public GameObject lightLayer;
     public Tilemap foregroundLayer;
@@ -86,6 +88,10 @@ public class MapGeneration : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
     }
     // Update is called once per frame
     void Update()
@@ -162,9 +168,9 @@ public class MapGeneration : MonoBehaviour
         positions.Add(bottomCenter);
         positions.Add(bottomRight);
 
-        for (int x = - 1; x < width ; ++x)
+        for (int x = - 1; x < width +1 ; ++x)
         {
-            for (int y = -1; y < height; ++y)
+            for (int y = -1; y < height +1; ++y)
             {
                 Dictionary<KeyValuePair<int, int>, string> subSquare = new Dictionary<KeyValuePair<int, int>, string>();
 
@@ -172,9 +178,9 @@ public class MapGeneration : MonoBehaviour
                 {
                     for (int j = 0; j < 3; ++j)
                     {
-                        if (x + i < 0 || y + j < 0 || x + i >= width || y + j >= height)
+                        if (!map.ContainsKey(new KeyValuePair<int, int>(x +i,y+ j)))
                         {
-                            subSquare.Add(new KeyValuePair<int, int>(i, j), "TBC"); //Doesn't exists in the map
+                            subSquare.Add(new KeyValuePair<int, int>(i, j), "!"); //Doesn't exists in the map
                             continue;
                         }
 
@@ -197,7 +203,7 @@ public class MapGeneration : MonoBehaviour
                     //determines walls around.
                     foreach (var pos in positions)
                     {
-                        if (subSquare[pos] == "TBC")
+                        if (subSquare[pos] == "TBC" || subSquare[pos] == "!")
                         {
                             subSquare[pos] = "WALL";
                         }
@@ -238,10 +244,10 @@ public class MapGeneration : MonoBehaviour
 
         // A room is near
         // Detect room
-        for (int x = 0; x < width; ++x)
+        foreach (var item in map)
         {
-            for (int y = 0; y < height; ++y)
-            {
+            int x = item.Key.Key;
+            int y = item.Key.Value;
                 KeyValuePair<int, int> mapKeyPair = new KeyValuePair<int, int>(x, y);
                 var cellType = map[mapKeyPair];
 
@@ -420,7 +426,7 @@ public class MapGeneration : MonoBehaviour
                     room.AddDoorEntrance(doorEntrance);
 
                 }
-            }
+            
         }
 
 
@@ -433,7 +439,8 @@ public class MapGeneration : MonoBehaviour
     private void GenerateMap(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {
         // TODO Configure Astar
-        //astarGO.GetComponent<AstarPath>().;
+        
+        
 
 
         Vector3 startPosition = Vector3.zero;
@@ -450,28 +457,30 @@ public class MapGeneration : MonoBehaviour
             }
             else if (cellType == "SU")
             {
-                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
                 startPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
             }
             else if(cellType == "SD")
             {
                 endPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
-                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
-                var enemy = Instantiate(exitPrefab, new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0), Quaternion.identity, middlegroundLayer.transform);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
+                var exitGO = Instantiate(exitPrefab, new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0), Quaternion.identity, collidegroundLayer.transform);
 
             }
             else if (cellType == "WALL")
             {
-                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), wallTile);
+                collidegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), wallTile);
                 var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
                 lightCube.transform.position = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, lightCube.transform.position.z);
             }
-            else if(cellType == "DOOR"
-                || cellType == "HERSE"
-                || cellType == "SECRET_DOOR")
+            else if(cellType == "DR" || cellType == "DB" || cellType == "DL" || cellType == "DT"
+                    || cellType == "DPR" || cellType == "DPB" || cellType == "DPL" || cellType == "DPT"
+                    || cellType == "DSR" || cellType == "DSB" || cellType == "DSL" || cellType == "DST")
             {
                 backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
-                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
+                collidegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
             }
         }
 
@@ -509,19 +518,22 @@ public class MapGeneration : MonoBehaviour
             }
 
             int area = (rWidth * rHeight) / (int)randGlobalModifier;
+
             var rand = new System.Random();
             var randTrash = rand.Next(1, (int)(area*randTrashModifier));
             // Trash are only set next to a border;
-            List<Vector2> tmpList = new List<Vector2>();
+           
             if (randTrash > maxTrashByRoom)
                 randTrash = (int)maxTrashByRoom;
 
             for (int trashIndex = 0; trashIndex < randTrash; ++trashIndex)
             {
                 var positionIndex = rand.Next(0, borders.Count -1);
-                middlegroundLayer.SetTile(new Vector3Int((int)(borders[positionIndex].x), (int)(-borders[positionIndex].y), 0), trashTile);
-               // var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
-               // lightCube.transform.position = new Vector3((borders[positionIndex].x) + 0.5f, -(borders[positionIndex].y) + 0.5f, lightCube.transform.position.z);
+                collidegroundLayer.SetTile(new Vector3Int((int)(borders[positionIndex].x), (int)(-borders[positionIndex].y), 0), trashTile);
+                var trash = Instantiate(trashPrefab, new Vector3(borders[positionIndex].x + 0.5f, -borders[positionIndex].y + 0.5f, 0), Quaternion.identity, collidegroundLayer.transform);
+
+                // var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
+                // lightCube.transform.position = new Vector3((borders[positionIndex].x) + 0.5f, -(borders[positionIndex].y) + 0.5f, lightCube.transform.position.z);
                 borders.RemoveAt(positionIndex);
             }
 
@@ -533,8 +545,9 @@ public class MapGeneration : MonoBehaviour
                     randEnemy = (int)maxEnemyByRooms;
                 for(int enemyIndex = 0; enemyIndex < randEnemy; ++enemyIndex)
                 {
-                    var positionIndex = rand.Next(0, inner.Count -1);
-                    var rotation = rand.Next(0, 3);
+                    var rand2 = new System.Random();
+                    var positionIndex = rand2.Next(0, inner.Count -1);
+                    var rotation = rand2.Next(0, 3);
                     Quaternion rot = Quaternion.identity;
                     switch(rotation)
                     {
@@ -551,7 +564,7 @@ public class MapGeneration : MonoBehaviour
                             Quaternion.Euler(0f, 0f, 0f);
                             break;
                     }
-                    var enemy = Instantiate(enemyPrefab, new Vector3(inner[positionIndex].x + 0.5f, - inner[positionIndex].y + 0.5f, 0), rot, middlegroundLayer.transform);
+                    var enemy = Instantiate(enemyPrefab, new Vector3(inner[positionIndex].x + 0.5f, -inner[positionIndex].y + 0.5f, 0), rot, collidegroundLayer.transform);
                     
                 }
             }
@@ -560,12 +573,17 @@ public class MapGeneration : MonoBehaviour
             for (int vomiIndex = 0; vomiIndex < randvomi; ++vomiIndex)
             {
                 var positionIndex = rand.Next(0, entrances.Count - 1);
-                middlegroundLayer.SetTile(new Vector3Int((int)(entrances[positionIndex].x), (int)(-entrances[positionIndex].y), 0), vomiTile);
+                collidegroundLayer.SetTile(new Vector3Int((int)(entrances[positionIndex].x), (int)(-entrances[positionIndex].y), 0), vomiTile);
             }
         }
 
 
         onLoaded?.Invoke(startPosition, endPosition);
         
+    }
+
+    public void deleteTile(Vector3Int pos)
+    {
+        collidegroundLayer.SetTile(pos, null);
     }
 }

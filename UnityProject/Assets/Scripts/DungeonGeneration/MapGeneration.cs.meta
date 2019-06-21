@@ -3,7 +3,23 @@ guid: b417522ba82fec646a76df552e60ce89
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - astarGO: {instanceID: 0}
+  - backgroundTile: {instanceID: 0}
+  - wallTile: {instanceID: 0}
+  - doorTile: {instanceID: 0}
+  - trashTile: {instanceID: 0}
+  - trashPrefab: {instanceID: 0}
+  - vomiTile: {instanceID: 0}
+  - exitTile: {instanceID: 0}
+  - exitPrefab: {instanceID: 0}
+  - enemyPrefab: {instanceID: 0}
+  - lightCubePrefab: {instanceID: 0}
+  - backgroundLayer: {instanceID: 0}
+  - collidegroundLayer: {instanceID: 0}
+  - middlegroundLayer: {instanceID: 0}
+  - lightLayer: {instanceID: 0}
+  - foregroundLayer: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

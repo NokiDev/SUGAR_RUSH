@@ -6,11 +6,16 @@ using UnityEngine.UI;
 public class displayKeys : MonoBehaviour
 {
     public Image keyImage;
-    public Pocket pocket;
+
+    private GameObject player;
+    private Pocket pocket;
     private List<Image> keysList = new List<Image>();
 
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        pocket = player.GetComponent<Pocket>();
+
         pocket.keyAdded += addKey;
         pocket.keyUsed += removeKey;
     }
@@ -32,7 +37,7 @@ public class displayKeys : MonoBehaviour
         for (int i = 0; i < keysUsed; ++i)
         {
             int lastIndex = keysList.Count - 1;
-            Destroy(keysList[lastIndex]);
+            Destroy(keysList[lastIndex].gameObject);
             keysList.RemoveAt(lastIndex);
         }
     }

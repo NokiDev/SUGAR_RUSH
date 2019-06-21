@@ -5,7 +5,8 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     public uint healthMax = 1;
-    public float invicibilityTimer = 1.5f;
+    public float invicibilityTimer = 0.5f;
+    public float timeBeforeDestroy = 1f;
     public delegate void DeathCb();
     public DeathCb onDeath;
     public delegate void HitCb(float invicibilityTimer, uint health);
@@ -20,6 +21,7 @@ public class Damageable : MonoBehaviour
     {
         health = healthMax;
         onDeath += new DeathCb(OnDeath);
+        onHit += (float invicibility, uint health) => { OnHit(); };
     }
     // Start is called before the first frame update
     void Start()
@@ -72,6 +74,7 @@ public class Damageable : MonoBehaviour
     void OnHit()
     {
         // Add blink;
+        StartCoroutine("HitAnimation");
     }
 
     void OnDeath()
@@ -81,9 +84,23 @@ public class Damageable : MonoBehaviour
 
     IEnumerator DeathAnimation()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(timeBeforeDestroy);
 
         Destroy(gameObject);
         yield return null;
+    }
+
+    IEnumerator HitAnimation()
+    {
+        var sprite = GetComponent<SpriteRenderer>();
+        sprite.color = Color.white;
+        yield return new WaitForSeconds(invicibilityTimer / 4);
+        sprite.color = Color.red;
+        yield return new WaitForSeconds(invicibilityTimer / 4);
+        sprite.color = Color.white;
+        yield return new WaitForSeconds(invicibilityTimer / 4);
+        sprite.color = Color.red;
+        yield return new WaitForSeconds(invicibilityTimer / 4);
+        sprite.color = Color.white;
     }
 }

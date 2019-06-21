@@ -13,6 +13,7 @@ TagManager:
   - LocationHelper
   - bullet
   - mapGenerator
+  - ingameUI
   layers:
   - Default
   - TransparentFX
