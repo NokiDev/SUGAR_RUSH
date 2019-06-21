@@ -133,6 +133,8 @@ GameObject:
   - component: {fileID: 4207014380795556081}
   - component: {fileID: 1044724125785703030}
   - component: {fileID: -5495710315550960223}
+  - component: {fileID: 1237287462969675651}
+  - component: {fileID: 7343531924488975678}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Untagged
@@ -348,3 +350,28 @@ MonoBehaviour:
   invicibilityTimer: 0.5
   timeBeforeDestroy: 0
   health: 3
+--- !u!114 &1237287462969675651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207014380795556083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894cb6a5deb808b43bccbffa75003b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7343531924488975678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207014380795556083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1411fe8c51c1743b05bba0dff436ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2.7

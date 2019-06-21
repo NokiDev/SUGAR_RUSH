@@ -40,8 +40,13 @@ public class GameManager : MonoBehaviour
 
     public void StartNormalGame()
     {
-   
+        // FIXME react to event in game canvas.
         SceneManager.LoadScene(4, LoadSceneMode.Single);
+    }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene(0);
     }
 
 
@@ -99,6 +104,11 @@ public class GameManager : MonoBehaviour
         else if (scene.buildIndex == 3) // Game Over
         {
 
+        }
+        else if (scene.buildIndex == 4)
+        {
+            playerInstance = GameObject.FindGameObjectWithTag("Player");
+            playerInstance.GetComponent<Damageable>().onDeath += GameOver;
         }
     }
 

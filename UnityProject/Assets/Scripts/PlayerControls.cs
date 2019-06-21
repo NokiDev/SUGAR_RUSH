@@ -63,8 +63,8 @@ public class PlayerControls : MonoBehaviour
 
     void BlockControl(float timer, uint health)
     {
-        BlockFor(timer);
-        movingScript.Stun(timer);
+        BlockFor(0.1f);
+        movingScript.Stun(0.1f);
     }
 
     IEnumerator BlockFor(float timer)
