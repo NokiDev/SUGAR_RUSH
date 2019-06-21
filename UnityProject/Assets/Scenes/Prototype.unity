@@ -126,18 +126,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 942227295}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &25108192 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 832300608, guid: ca607af57b983c84898b0a192b2f7c97,
-    type: 3}
-  m_PrefabInstance: {fileID: 942227295}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 25108191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b18688b0c8203143bff89be04896fd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &25108197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16783,7 +16771,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyImage: {fileID: 7795207340699344207, guid: e2befcbf71d3bb949936e96c8e2404db,
     type: 3}
-  pocket: {fileID: 25108197}
 --- !u!114 &224711041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16800,7 +16787,6 @@ MonoBehaviour:
     type: 3}
   emptyImage: {fileID: 2238884277441845589, guid: a237fa40284d37742a3a6cb001d60dc6,
     type: 3}
-  damageable: {fileID: 25108192}
 --- !u!1 &236973215
 GameObject:
   m_ObjectHideFlags: 0
@@ -17111,26 +17097,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5696459402754479946, guid: 8ff7989fc6b21064d9fa34980763e521,
-        type: 3}
-      propertyPath: data.dataString
-      value: UEsDBBQAAAgIAAAAIeyrmNhfTQIAAPgEAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VE2P2jAQ/SvI57IKFITorRtYtgcWtLTaSy5OPCEWjh35Y/lY8d87dhISqHrCvHkzfvNmnC/Cpakgs0qvNGdrxYD8GBB/Jt8GXfAVTnSv5I5foOV8cGYLT6KB804tV4iPfJpRJVjNs59yLzw5QtBJnitdLtkeYmWsQTinwgCGtLI+WyL0NSAn/BnOfcoZT+OZP13wNI8GVzxmIC3ojjppmS2vpjmZCVpWwLzmjj2KWvpsGngS22ko0dPU11dCcNOoIfZchW5jWhmHvSCBcYrdBQnR0wSBAvi+sF5rP32T5wZso0vT84JrtKmuS55V7V1JzaEW90mFgyBwPAnC6qrrfwjDUQjnWpWv7cV1V7bg2eGdnjNqbM/dPrzotI+CSUcqDjQV8FGAfFMrrZxkGLTa+VRnYLzo/t56iwvIDh1eS30AXdW5/jgi38M1tH+KBS/Tm5UI7IQKlocNAI3j+YWCw36YpgSiXsUfA7/pvr9ITeCFa2Mx1HQpvbxUOe2pZBk88904GystQfcrVCCpsOct1rGPQ3yI/T/rhfo309zexNqn8JAS4I4fRQ+hrTrepmUKdVyDKTbOCi6hs9oH3tCoWElZ75i5D/qsndM5zXpZe8fZ/WqRdJLOkTSK8pSyKILhLJ+l03T8PZtGNGcsImH3uMQ2qdjWOht3cGqyKy5xz9ovyWClaRXWnWl6XPFLqXr6uMzVLtMAcnNXwYDGO/BlsiXjaM8OrOUyjJt8JUSo7AAsufGT0OjyZDVNOpsTUvFPZT2SkDh8ORJyJde/UEsDBBQAAAgIAAAAIez5BtZ1bAAAAHcAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0rPQUVBKL0osyCgGChiCOKWZKSB2tFKSSZJlWmKyoUFaUmKKgUGqrnmaeZJpkpFxsqlBYlpKioFSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAAAh7KuY2F9NAgAA+AQAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAAAh7PkG1nVsAAAAdwAAAAkAJAAAAAAAAAAAAAAAmgIAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAABRAwAAAAA=
-      objectReference: {fileID: 0}
-    - target: {fileID: 5696459402754479946, guid: 8ff7989fc6b21064d9fa34980763e521,
-        type: 3}
-      propertyPath: showUnwalkableNodes
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5696459402754479946, guid: 8ff7989fc6b21064d9fa34980763e521,
-        type: 3}
-      propertyPath: heuristic
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5696459402754479946, guid: 8ff7989fc6b21064d9fa34980763e521,
-        type: 3}
-      propertyPath: heuristicScale
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ff7989fc6b21064d9fa34980763e521, type: 3}
 --- !u!4 &437892148 stripped
@@ -17139,40 +17105,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 797718303}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &464871034
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: SpriteLightKit RT
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 3
-  m_Width: 1147
-  m_Height: 537
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 0
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!4 &673182606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4207014380795556082, guid: c4c743d1624253b40aad063823072a2e,
@@ -17896,6 +17828,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3669472865078130499, guid: ca607af57b983c84898b0a192b2f7c97,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 832300608, guid: ca607af57b983c84898b0a192b2f7c97, type: 3}
       propertyPath: healthMax
       value: 22
@@ -17905,19 +17842,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8121389571717973642, guid: ca607af57b983c84898b0a192b2f7c97,
-        type: 3}
-      propertyPath: m_BounceIntensity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8583863450301932638, guid: ca607af57b983c84898b0a192b2f7c97,
         type: 3}
       propertyPath: m_RenderMode
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 3669472865078130499, guid: ca607af57b983c84898b0a192b2f7c97,
+    - target: {fileID: 8121389571717973642, guid: ca607af57b983c84898b0a192b2f7c97,
         type: 3}
-      propertyPath: m_LocalPosition.z
+      propertyPath: m_BounceIntensity
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -26744,6 +26676,40 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!84 &2012405251
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SpriteLightKit RT
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 3
+  m_Width: 487
+  m_Height: 489
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 0
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &2120837676
 GameObject:
   m_ObjectHideFlags: 0
@@ -27152,6 +27118,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 464871034}
+      objectReference: {fileID: 2012405251}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8fa5fe535f351c4ab8d83ef16140c59, type: 3}

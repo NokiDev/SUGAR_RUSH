@@ -64,7 +64,8 @@ MonoBehaviour:
   lightCubePrefab: {fileID: 7311230335882477093, guid: a0bfb4ed82b43c04ca1964291d0591f7,
     type: 3}
   backgroundLayer: {fileID: 7251515809943964420}
-  middlegroundLayer: {fileID: 7251515807987222837}
+  collidegroundLayer: {fileID: 7251515807987222837}
+  middlegroundLayer: {fileID: 1546745261316626164}
   lightLayer: {fileID: 4147247194772369230}
   foregroundLayer: {fileID: 7251515809468121206}
   pathPrefix: /Scripts/DungeonGeneration/Maps/
@@ -135,6 +136,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5696459402754479946, guid: 8ff7989fc6b21064d9fa34980763e521,
+        type: 3}
+      propertyPath: data.dataString
+      value: UEsDBBQAAAgIAAAIIew/2Kj+VgIAAP0EAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VE1z2jAQ/SuMzqVjaBia3lpCSA8kmdBMLr7I1hprkCWPPgIkw3/vrmxjQ6cnlt23q/eeVv5kUrsacm/sykqxNgLYjxGjmH0Z9cUHOPCt0Rv5AR3mTQpfEohHzAv30mB+Qm3OVOCtzH/qrSJwgsmgZWFstRRbWBjnHaYLrhxgyRpP3RpTnyN2wJ/xLbUcMZrOKfrA6DYZnTDMQXuwPXQynbXQcRMStoEGnSte1SCId98xnZ2HzxqgRk0tJvlKM3KjlHQtJeaPdZT8wo8kWEiO8iIHUluC3Jaepg0bn4rCgW+1W368kxZdaiayX6axruJu1/B65yrQGdPk5nuk1Exd/wMYT2K5sKZ66A6eJHSIL2W+Q4o5d35g7jB9d8k86D1XO54peCtBP5qVNUELLHobqDU4mN71f8/aFiXkuz7fUL1Khro3vLO7u0nScIryDwslqyzaftMkNspEs+MCgMWL+Y2E43q4dgRmicWrgz98O9yjtnAvrfNYalVqopeZYAnKltEzUhP8wlgNdjihBs2VPz7jHH99iVe1/3fdc3oy7eltrXsJVy0x3eOT5Kr0bPbn23Kl2a/BlU/BK6mht5oKj2jUwmjd7Ji7LFLXJtiC54OubZDicrVYdpPdImiSFBkXSQLjeTHPZtn0Wz5LeCFEwuLuSY0yuXpueLbu4K3pfrjGPes+JKOV5XVcd2H5fiU/KjPgJ3VhNrkF0E/NhM4hBxYPwUcplkKiPxvwXup43+wzZcrkOxDpeVAalS4P3vK0n5KyWr4bT5mUXp031QstQMpO7PQXUEsDBBQAAAgIAAAIIez5BtZ1bAAAAHcAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0rPQUVBKL0osyCgGChiCOKWZKSB2tFKSSZJlWmKyoUFaUmKKgUGqrnmaeZJpkpFxsqlBYlpKioFSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAAgh7D/YqP5WAgAA/QQAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAAgh7PkG1nVsAAAAdwAAAAkAJAAAAAAAAAAAAAAAowIAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAABaAwAAAAA=
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ff7989fc6b21064d9fa34980763e521, type: 3}
@@ -905,6 +911,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 7438736304919664269, guid: 7e09f54bfe09ac946b76498246cfc85a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e09f54bfe09ac946b76498246cfc85a, type: 3}
 --- !u!4 &7251515809242282778 stripped
@@ -916,6 +927,12 @@ Transform:
 --- !u!1839735485 &7251515809943964420 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 5776888511668084222, guid: 7e09f54bfe09ac946b76498246cfc85a,
+    type: 3}
+  m_PrefabInstance: {fileID: 3785607861503268602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1839735485 &1546745261316626164 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 2449407160520523790, guid: 7e09f54bfe09ac946b76498246cfc85a,
     type: 3}
   m_PrefabInstance: {fileID: 3785607861503268602}
   m_PrefabAsset: {fileID: 0}

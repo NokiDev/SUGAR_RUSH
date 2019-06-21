@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 4207014380795556080}
   - component: {fileID: 4207014380795556081}
   - component: {fileID: 1044724125785703030}
+  - component: {fileID: -5495710315550960223}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Untagged
@@ -331,3 +332,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detector: {fileID: 0}
+--- !u!114 &-5495710315550960223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207014380795556083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b18688b0c8203143bff89be04896fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthMax: 3
+  invicibilityTimer: 0.5
+  health: 3

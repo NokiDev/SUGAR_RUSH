@@ -71,6 +71,7 @@ public class MapGeneration : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject lightCubePrefab;
     public Tilemap backgroundLayer;
+    public Tilemap collidegroundLayer;
     public Tilemap middlegroundLayer;
     public GameObject lightLayer;
     public Tilemap foregroundLayer;
@@ -433,7 +434,8 @@ public class MapGeneration : MonoBehaviour
     private void GenerateMap(uint width, uint height, Dictionary<KeyValuePair<int, int>, string> map)
     {
         // TODO Configure Astar
-        //astarGO.GetComponent<AstarPath>().;
+        
+        
 
 
         Vector3 startPosition = Vector3.zero;
@@ -457,13 +459,14 @@ public class MapGeneration : MonoBehaviour
             else if(cellType == "SD")
             {
                 endPosition = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0);
-                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
-                var exitGO = Instantiate(exitPrefab, new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0), Quaternion.identity, middlegroundLayer.transform);
+                backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
+                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), exitTile);
+                var exitGO = Instantiate(exitPrefab, new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, 0), Quaternion.identity, collidegroundLayer.transform);
 
             }
             else if (cellType == "WALL")
             {
-                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), wallTile);
+                collidegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), wallTile);
                 var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
                 lightCube.transform.position = new Vector3(item.Key.Key + 0.5f, -item.Key.Value + 0.5f, lightCube.transform.position.z);
             }
@@ -472,7 +475,7 @@ public class MapGeneration : MonoBehaviour
                     || cellType == "DSR" || cellType == "DSB" || cellType == "DSL" || cellType == "DST")
             {
                 backgroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), backgroundTile);
-                middlegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
+                collidegroundLayer.SetTile(new Vector3Int(item.Key.Key, -item.Key.Value, 0), doorTile);
             }
         }
 
@@ -521,7 +524,7 @@ public class MapGeneration : MonoBehaviour
             for (int trashIndex = 0; trashIndex < randTrash; ++trashIndex)
             {
                 var positionIndex = rand.Next(0, borders.Count -1);
-                middlegroundLayer.SetTile(new Vector3Int((int)(borders[positionIndex].x), (int)(-borders[positionIndex].y), 0), trashTile);
+                collidegroundLayer.SetTile(new Vector3Int((int)(borders[positionIndex].x), (int)(-borders[positionIndex].y), 0), trashTile);
                // var lightCube = Instantiate(lightCubePrefab, lightLayer.transform);
                // lightCube.transform.position = new Vector3((borders[positionIndex].x) + 0.5f, -(borders[positionIndex].y) + 0.5f, lightCube.transform.position.z);
                 borders.RemoveAt(positionIndex);
@@ -554,7 +557,7 @@ public class MapGeneration : MonoBehaviour
                             Quaternion.Euler(0f, 0f, 0f);
                             break;
                     }
-                    var enemy = Instantiate(enemyPrefab, new Vector3(inner[positionIndex].x + 0.5f, -inner[positionIndex].y + 0.5f, 0), rot, middlegroundLayer.transform);
+                    var enemy = Instantiate(enemyPrefab, new Vector3(inner[positionIndex].x + 0.5f, -inner[positionIndex].y + 0.5f, 0), rot, collidegroundLayer.transform);
                     
                 }
             }
@@ -563,7 +566,7 @@ public class MapGeneration : MonoBehaviour
             for (int vomiIndex = 0; vomiIndex < randvomi; ++vomiIndex)
             {
                 var positionIndex = rand.Next(0, entrances.Count - 1);
-                middlegroundLayer.SetTile(new Vector3Int((int)(entrances[positionIndex].x), (int)(-entrances[positionIndex].y), 0), vomiTile);
+                collidegroundLayer.SetTile(new Vector3Int((int)(entrances[positionIndex].x), (int)(-entrances[positionIndex].y), 0), vomiTile);
             }
         }
 
