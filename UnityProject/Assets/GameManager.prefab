@@ -46,3 +46,9 @@ MonoBehaviour:
   generator: {fileID: 0}
   playerPrefab: {fileID: 5186722168488632675, guid: ca607af57b983c84898b0a192b2f7c97,
     type: 3}
+  countdown: 12
+  dungeonMaps:
+  - mini
+  - test
+  - test2
+  - test3

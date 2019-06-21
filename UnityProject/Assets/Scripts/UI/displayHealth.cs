@@ -57,7 +57,7 @@ public class displayHealth : MonoBehaviour
 
     void imageSwitch(int index, Image image)
     {
-        Destroy(healthList[index]);
+        Destroy(healthList[index].gameObject);
 
         Image newHealth = Instantiate(image, gameObject.transform);
 

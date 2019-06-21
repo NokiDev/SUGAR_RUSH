@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 7212034762526175588}
   - component: {fileID: 5671456212035551842}
   - component: {fileID: 832300608}
+  - component: {fileID: 4635999889519909802}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -257,6 +258,18 @@ MonoBehaviour:
   healthMax: 1
   invicibilityTimer: 1
   health: 1
+--- !u!114 &4635999889519909802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5186722168488632675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd2220e8623d9e7459eb4d216e05a24e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!108 &3642250876807838034
 Light:
   m_ObjectHideFlags: 0
@@ -399,16 +412,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5186722168488632673}
     m_Modifications:
-    - target: {fileID: -3890655376767255378, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
-        type: 3}
-      propertyPath: m_Name
-      value: Point Light
-      objectReference: {fileID: 0}
-    - target: {fileID: -5553899170941500166, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8121389572083381553, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
         type: 3}
       propertyPath: m_Name
@@ -473,6 +476,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Intensity
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: -3890655376767255378, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
+        type: 3}
+      propertyPath: m_Name
+      value: Point Light
+      objectReference: {fileID: 0}
+    - target: {fileID: -5553899170941500166, guid: efa9d279aa3c9f14ab9fd04e9d520ddb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efa9d279aa3c9f14ab9fd04e9d520ddb, type: 3}

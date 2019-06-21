@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     // The player, Null at start. but for the demo it is already set.
     public MapGeneration generator;
     public GameObject playerPrefab;
+    public float countdown = 120f;
+    private Timer timer;
     private uint currentLevelAchieved = 0;
     private GameObject playerInstance;
 
@@ -81,6 +83,11 @@ public class GameManager : MonoBehaviour
         else if (scene.buildIndex == 2) // Game
         {
             generator.gameObject.transform.GetChild(0).gameObject.SetActive(true); // One child, grid
+            timer = GameObject.FindGameObjectWithTag("ingameUI").GetComponentInChildren<Timer>();
+            timer.onEnd += GameOver;
+
+            timer.reset(countdown);
+            timer.start();
         }
         else if (scene.buildIndex == 3) // Game Over
         {
@@ -90,6 +97,7 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
+        Debug.Log("PERDU");
         // TODO Display end game screen
     }
 

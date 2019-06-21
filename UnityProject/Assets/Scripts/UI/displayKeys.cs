@@ -37,7 +37,7 @@ public class displayKeys : MonoBehaviour
         for (int i = 0; i < keysUsed; ++i)
         {
             int lastIndex = keysList.Count - 1;
-            Destroy(keysList[lastIndex]);
+            Destroy(keysList[lastIndex].gameObject);
             keysList.RemoveAt(lastIndex);
         }
     }
