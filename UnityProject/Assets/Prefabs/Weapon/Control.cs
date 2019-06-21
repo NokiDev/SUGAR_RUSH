@@ -13,10 +13,13 @@ public class Control : MonoBehaviour
     private Vector3 weapon_pos;
     private Vector3 weapon_vect;
 
+    public AudioClip audioClip;
+    private AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -44,5 +47,7 @@ public class Control : MonoBehaviour
         var b = Instantiate(bullet, bullet_start_position, Quaternion.identity, gameObject.transform.parent.parent);
 
         b.GetComponent<Rigidbody2D>().velocity = (shot_vector);
+
+        audioSource.PlayOneShot(audioClip, 1);
     }
 }
